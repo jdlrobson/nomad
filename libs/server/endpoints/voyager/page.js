@@ -204,7 +204,7 @@ export default function ( title, lang, project, revision ) {
       var sections = [];
       var isSubPage = data.lead.displaytitle.indexOf( '/' ) > -1;
       var cardSectionTocLevel;
-      var blacklist = [ 'Talk' ];
+      var blacklist = [];
       var allImages = [];
       var logistics = [];
       var sights = [];
@@ -214,7 +214,7 @@ export default function ( title, lang, project, revision ) {
       var orientation = [];
       var itineraries = [];
       const SIGHT_HEADINGS = [ 'See', 'See & Do' ];
-      const DESTINATION_BLACKLIST = [ 'Understand' ];
+      const DESTINATION_BLACKLIST = [ 'Understand', 'Talk' ];
       const EXPLORE_HEADINGS = [ 'Regions', 'Districts', 'Countries', 'Get around', 'Listen',
         'Eat and drink', 'Counties', 'Prefectures', 'Fees/Permits', 'See',
         'Buy', 'Eat', 'Drink', 'Do' ];
@@ -313,7 +313,7 @@ export default function ( title, lang, project, revision ) {
           if ( EXPLORE_HEADINGS.indexOf( curSectionLine ) > -1 ) {
             orientation.push( section );
           } else if ( [
-            'Get in', 'Sleep' ].indexOf( curSectionLine ) > -1
+            'Get in', 'Sleep', 'Talk' ].indexOf( curSectionLine ) > -1
           ) {
             logistics.push( section );
           } else if ( sectionBlacklist.indexOf( curSectionLine ) === -1 ) {
