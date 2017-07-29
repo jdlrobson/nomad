@@ -25,13 +25,20 @@ export default [
   ],
   // Map Collection Overlay
   [
-    /^#\/collection-map\/(.*)\/(.*)\/$/,
+    /^#\/collection-map\/(.*)\/?(.*)\/?$/,
     function ( info, props ) {
       var lang = props.lang || 'en';
+      var endpoint = '/api/' + lang + '/collection/';
+      if ( info[1] ) {
+        endpoint += 'by/' + info[1];
+      }
+      if ( info[2] ) {
+        endpoint += '/' + info[2];
+      }
       var overlayProps = Object.assign( {}, props, {
         explorable: false,
         continue: true,
-        apiEndpoint: '/api/' + lang + '/collection/by/' + info[1] + '/' + info[2]
+        apiEndpoint: endpoint
       } );
       return {
         overlay: React.createElement( MapOverlay, overlayProps )

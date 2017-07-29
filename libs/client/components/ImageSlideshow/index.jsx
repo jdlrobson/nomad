@@ -38,10 +38,11 @@ export default createReactClass({
     var props = this.props;
     var self = this;
     var active = this.state.activeImage;
-    var prev = active === 0 ? null :
-      <Icon glyph="arrow-invert" small={true} className="arrow-left" onClick={this.prev} />;
-    var next = active > this.state.numImages - 2 ? null :
-      <Icon glyph="arrow-invert" small={true} className="arrow-right" onClick={this.next} />
+    var hasMultipleImages = props.images.length > 1;
+    var prev = hasMultipleImages ?
+      <Icon glyph="arrow-invert" className="arrow-left" onClick={this.prev} /> : null;
+    var next = hasMultipleImages  ?
+      <Icon glyph="arrow-invert" className="arrow-right" onClick={this.next} /> : null;
 
     return (
       <div className="component-image-slideshow">
@@ -52,7 +53,7 @@ export default createReactClass({
              var className = i === active ? 'active' : '';
              return (
                <li className={className} key={"image-slide-" + i}>
-                 <a href={img.href} onClick={self.onClick}>
+                 <a href={img.href} onClick={self.onClick} style={{backgroundImage: `url("${src}")`}}>
                    <img src={src} alt={img.caption} />
                   </a>
                 </li>

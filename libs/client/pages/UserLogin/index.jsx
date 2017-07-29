@@ -1,21 +1,26 @@
 import React from 'react'
 import createReactClass from 'create-react-class'
-
 import { Button } from 'wikipedia-react-components'
 
-import Content from './../components/Content'
+import Content from './../../components/Content'
+import Article from './../Article'
 
-import Article from './Article'
+import './styles.less'
 
 // Pages
 export default createReactClass({
   render() {
     var props = this.props;
     var createAccountUrl = "https://meta.wikimedia.org/wiki/Special:CreateAccount?campaign=weekipedia";
-    var url = '/auth/mediawiki?project=' + props.language_project + '&returnto=' + props.query.returnto;
+    const returnto = props.query && props.query.returnto;
+    var url = '/auth/mediawiki?project=' + props.language_project;
+    if ( returnto ) {
+      url += '&returnto=' + returnto;
+    }
 
     var body = (
-      <Content className="content">
+      <Content className="content user-login">
+        <h1>Someday</h1>
         <p>Logged in users enjoy the additional benefits of <strong>managing lists of articles via collections</strong> and
       the ability to <strong>edit</strong> article content.</p>
         <p>To login you'll need a Wikimedia account that allows editing to projects owned by the Wikimedia Foundation.<br/>If you use <strong>Wikipedia</strong> you already have one.</p>

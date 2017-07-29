@@ -18,10 +18,8 @@ const SHOW_TALK_ANONS = Boolean( process.env.SHOW_TALK_ANONS );
 
 const IS_DEV_MODE = NODE_ENV !== 'production'
 
-const DUMMY_SESSION = IS_DEV_MODE ? { dummy: true,
-  displayName: 'Traveller' } :
-  ( process.env.DEV_DUMMY_USER ? { dummy: true,
-  displayName: process.env.DEV_DUMMY_USER } : null )
+const DUMMY_SESSION = process.env.DEV_DUMMY_USER ? { dummy: true,
+  displayName: process.env.DEV_DUMMY_USER } : null;
 
 const ALL_PROJECTS = [ 'wikipedia', 'wikivoyage', 'wiktionary',
   'wikisource', 'wikiquote', 'wikinews', 'wikibooks', 'wikiversity' ].concat( SPECIAL_PROJECTS );
@@ -30,17 +28,17 @@ const SITE_ALLOW_FOREIGN_PROJECTS = Boolean( process.env.SITE_ALLOW_FOREIGN_PROJ
 const ALLOWED_PROJECTS = process.env.SITE_ALLOWED_PROJECTS ?
   process.env.SITE_ALLOWED_PROJECTS.split( '|' ) :  ALL_PROJECTS;
 
-const SITE_WORDMARK_PATH = process.env.SITE_WORDMARK_PATH
-const SITE_TITLE = process.env.SITE_TITLE || 'Weekipedia'
-const CONSUMER_SECRET = process.env.MEDIAWIKI_CONSUMER_SECRET;
-const CONSUMER_KEY = process.env.MEDIAWIKI_CONSUMER_KEY
+const SITE_WORDMARK_PATH = '/images/someday-brown.png';
+const SITE_TITLE = 'Someday';
+const CONSUMER_SECRET = process.env.MEDIAWIKI_CONSUMER_SECRET || 'a';
+const CONSUMER_KEY = process.env.MEDIAWIKI_CONSUMER_KEY || 'a'
 
 const LANGUAGE_CODE = process.env.DEFAULT_LANGUAGE || 'en'
 const SIGN_IN_SUPPORTED = DUMMY_SESSION ? true : ( CONSUMER_SECRET && CONSUMER_KEY )
 
-const SITE_EXPAND_SECTIONS = true;
+const SITE_EXPAND_SECTIONS = false;
 
-const SITE_EXPAND_SECTIONS_TABLET = Boolean( process.env.SITE_EXPAND_SECTIONS_TABLET );
+const SITE_EXPAND_SECTIONS_TABLET = false;
 
 const SITE_EXPAND_ARTICLE = true;
 

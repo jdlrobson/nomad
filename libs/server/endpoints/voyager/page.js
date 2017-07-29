@@ -21,6 +21,7 @@ const ITEMS_TO_DELETE = [
   '.dablink',
   '.mw-kartographer-maplink',
   '.pp_infobox',
+  '.listing-metadata',
   // otherwise you'll have destination links from the outline box.
   // e.g. https://en.wikivoyage.org/wiki/Dudinka
   '.article-status',
@@ -478,11 +479,11 @@ export default function ( title, lang, project, revision ) {
         json.lead.project_source = 'wikipedia';
         // Flatten links to avoid exploration of pages we don't know are relevant
         // to travel.
-        json.lead.paragraph = flattenLinksInHtml(json.lead.paragraph);
-        json.lead.sections = json.lead.sections.map(( section ) => {
-          section.text = flattenLinksInHtml(section.text);
+        json.lead.paragraph = flattenLinksInHtml( json.lead.paragraph );
+        json.lead.sections = json.lead.sections.map( ( section ) => {
+          section.text = flattenLinksInHtml( section.text );
           return section;
-        });
+        } );
       }
       // Limit to locations otherwise all sorts of subjects will show up from wikipedia.
       // e.g. http://localhost:8142/en.wikivoyage/Love

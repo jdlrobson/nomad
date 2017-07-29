@@ -1,0 +1,83 @@
+// Districts section of http://localhost:8142/en.wikivoyage/San%20Francisco?action=orientation
+/* stylelint-disable selector-no-id */
+#region_list {
+  > span:first-child {
+    text-align: left !important;
+    float: none !important;
+  }
+  table {
+    clear: both;
+    td {
+      padding-left: 8px;
+    }
+  }
+}
+
+.component-section-content {
+  .pp_cautionbox,
+  // Pricing in sleep section http://localhost:8142/en.wikivoyage/Panama%20City?action=logistics
+  .pricerange-table,
+  .pp_warningbox,
+  // tend to be used for things like national holiday in
+  // history section e.g. http://localhost:8142/en.wikivoyage/Panama
+  dl {
+    background-color: #eee;
+    padding: 8px;
+    margin: 0;
+    font-size: 0.8em;
+    border: 0 !important;
+  }
+
+  .wikitable {
+    font-size: 0.8em;
+  }
+
+  .pricerange-table td {
+    padding: 6px;
+  }
+
+  .text ul {
+    margin-left: 0;
+    margin-top: 10px;
+    list-style: none;
+
+    li {
+      position: relative;
+    }
+  }
+
+  li .vcard {
+    .listing-price {
+      font-weight: bold;
+      font-size: 0.8em;
+      margin-top: 20px;
+      display: block;
+    }
+
+    .listing-name {
+      background: #ccc;
+      padding: 4px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+    }
+
+    .listing-email,
+    .listing-address,
+    .listing-hours,
+    .listing-content,
+    .listing-name,
+    > a,
+    > b {
+      display: block;
+    }
+
+    .listing-email,
+    .listing-hours,
+    .tel,
+    .listing-address,
+    .listing-directions {
+       font-size: 0.8em;
+       color: #555;
+    }
+  }
+}

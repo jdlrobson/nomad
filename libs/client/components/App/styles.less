@@ -8,7 +8,6 @@
   height: 100%;
   line-height: 1.4;
   color: #252525;
-  background: #fff;
 }
 
 // Render the menu without JavaScript
@@ -26,10 +25,25 @@
 
 #mw-mf-page-center {
   min-height: 100%;
-  background-color: @app-bg-color;
+  background-color: #fff;
   transition: transform 0.25s ease-in-out, height 0s 0.5s;
   width: 100%;
   position: relative;
+  overflow: scroll;
+  height: 100%;
+}
+.overlay-enabled {
+    #mw-mf-page-center {
+      overflow: hidden;
+      height: 100%;
+      display: block;
+
+      .flex-box {
+        > * > * {
+          opacity: 0.5;
+        }
+      }
+    }
 }
 
 nav {
@@ -67,9 +81,9 @@ nav {
   visibility: visible;
 }
 
-.overlay-enabled #mw-mf-page-center {
-  height: 100%;
-  overflow: hidden;
-  display: block;
+@media (min-width: 720px) {
+  #mw-mf-page-center {
+    background-color: #00ab9f;
+  }
 }
 

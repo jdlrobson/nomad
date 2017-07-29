@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
 import Header from './../../components/Header'
-import { Icon } from 'wikipedia-react-components'
+import { HorizontalList } from 'wikipedia-react-components'
 
 import './styles.less'
 
@@ -11,45 +11,38 @@ class ChromeHeader extends Component {
     new Image( this.props.siteinfo.wordmark );
   }
   render(){
-    var heading, project, icon, siteinfo, content;
+    var main, loginLogout, helloMsg, listLink;
     var props = this.props;
-    var search = props.search;
-    var useSiteBranding = props.includeSiteBranding;
-    var secondaryIcon = useSiteBranding ? <Icon /> : null;
-    if ( this.props.secondaryIcon ) {
-      secondaryIcon = this.props.secondaryIcon;
-    }
-    if ( useSiteBranding ) {
-      siteinfo = props.siteinfo;
-      content = siteinfo.wordmark ?
-        <img src={siteinfo.wordmark} alt={siteinfo.title} height="15" width="97" /> :
-        siteinfo.title;
+    var session = props.session;
+    const title = props.title;
+    const loginUrl = "/wiki/Special:UserLogin?returnto=" + encodeURIComponent( title );
 
-      project = props.project;
-
-      if ( project !== siteinfo.defaultProject ) {
-        icon = <div className={"project-icon project-" + project}>{project}</div>
-      }
-      heading = [
-        <div className="branding-box" key="chrome-header-heading">
-          <h1>
-            <span>
-              {content}
-            </span>
-            <sup>{icon}</sup>
-          </h1>
-        </div>,
-        search
-      ];
+    if ( session && session.username ) {
+      helloMsg = <span key="chrome-header-hello">Welcome back, <strong>{session.username}</strong></span>;
+      listLink = <a href={"/wiki/Special:Collections/by/" + session.username}
+        onClick={props.onClickInternalLink}
+        key="chrome-header-trips">My trips</a>;
+      loginLogout = <a href="/auth/logout" key="chrome-header-login"
+          onClick={this.onClickLogout}>Logout</a>;
     } else {
-      heading = search;
-      search = null;
+      helloMsg = <span key="chrome-header-hello">Hello stranger!</span>;
+      loginLogout = <a href={loginUrl}
+        key="chrome-header-login">Sign in</a>;
+      listLink = <a href="/wiki/Special:Collections" onClick={props.onClickInternalLink}
+        key="chrome-header-trips">Our trips</a>;
     }
+    main = [
+        <HorizontalList key="chrome-menu">
+          <a href="/" onClick={props.onClickInternalLink}>Home</a>
+          {helloMsg}
+          {loginLogout}
+          {listLink}
+        </HorizontalList>
+    ];
 
-    return <Header key="header-bar" primaryIcon={props.primaryIcon} className="chrome-header"
+    return <Header key="header-bar" className="chrome-header"
       fixed={props.fixed}
-      main={heading}
-      secondaryIcon={secondaryIcon}></Header>
+      main={main}></Header>
   }
 }
 

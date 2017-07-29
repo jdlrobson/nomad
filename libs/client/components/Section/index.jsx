@@ -130,7 +130,7 @@ Section.propTypes = {
 
 Section.defaultProps = {
   isEditable: true,
-  isCollapsible: true,
+  isCollapsible: false,
   subsections: []
 };
 

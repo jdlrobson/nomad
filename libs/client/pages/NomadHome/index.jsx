@@ -8,6 +8,17 @@ import PagePreviewOverlay from './../../overlays/PagePreviewOverlay'
 
 import './styles.less'
 
+function placeholders() {
+  let arr = [];
+  for ( let i = 0; i < 25; i++ ) {
+    arr.push( {
+      id: i,
+      url: "",
+      thumbnail: {}
+    } );
+  }
+  return arr;
+}
 // Pages
 export default createReactClass({
   getDefaultProps: function () {
@@ -24,16 +35,19 @@ export default createReactClass({
   },
   componentDidMount() {
     this.setState( { jsEnabled: true } );
+    this.props.setBannerProps( { coordinates: { lat: 0, lon: 0 } } );
   },
   launchOverlay( ev, item ) {
     var props = this.props;
     ev.preventDefault();
-    this.props.showOverlay( <PagePreviewOverlay
-      onClickInternalLink={props.onClickInternalLink}
-      getLocalUrl={props.getLocalUrl} item={item} /> );
+    if ( item.url ) {
+      this.props.showOverlay( <PagePreviewOverlay
+        api={this.props.api}
+        onClickInternalLink={props.onClickInternalLink}
+        getLocalUrl={props.getLocalUrl} item={item} /> );
+    }
   },
   render(){
-    var quote = "Twenty years from now you will be more disappointed by the things that you didn't do than by the ones you did do. So throw off the bowlines. Sail away from the safe harbor. Catch the trade winds in your sails. Explore. Dream. Discover.";
     var searchUrl, exploreUrl;
     var cardUrl = '/api/random/' + this.props.lang;
     if ( this.state.jsEnabled ) {
@@ -41,24 +55,19 @@ export default createReactClass({
       exploreUrl = "#/explore/";
     }
     var body = [
-      <div className="quote-box" key="home-quote">
-        <blockquote>{quote}</blockquote>
-        <span className="author">Mark Twain</span>
-      </div>,
       <CardList key="nomad-list" {...this.props} unordered="1" apiEndpoint={cardUrl}
-        onCardClick={this.launchOverlay}
+        onCardClick={this.launchOverlay} pages={placeholders()} emptyMessage=""
         className="card-list-images" />,
     ];
-    var tagline = (<span>Click the map or scroll to adventure.</span>)
 
     var lead = {
       maplink: exploreUrl,
       coordinates: { zoom: 1, lat: 0, lon: 0 }
     };
+
     return (
       <Article {...this.props} body={body} className="home"
-        isBannerEnabled={true} lead={lead}
-        title='Where do you want to go today?' tagline={tagline} />
+        lead={lead} title="" />
     )
   }
 })

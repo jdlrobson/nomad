@@ -47,7 +47,7 @@ export default createReactClass({
           lat: c.lat,
           lng: c.lng || c.lon,
           label: <Card title={page.title} extracts={[ page.description ]}
-            router={self.props.router}
+            router={self.props.router} url={page.url}
             language_project={self.props.language_project}
             thumbnail={page.thumbnail} />
         };
@@ -94,7 +94,8 @@ export default createReactClass({
       endpoint = continueArgs ? endpoint + '?' + param( continueArgs ) : endpoint;
       props.api.fetch( endpoint )
         .then( ( collection ) => {
-          self.loadMarkers( collection.pages )
+          var pages = collection.pages || collection.collections;
+          self.loadMarkers( pages )
           if ( collection.continue && props.continue ) {
             loadMarkersInCollection( endpoint, collection.continue );
           }

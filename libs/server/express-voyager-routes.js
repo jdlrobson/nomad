@@ -29,6 +29,9 @@ function initRoutes( app ) {
         } else {
           return data;
         }
+      } ).catch( ( err ) => {
+        res.status( 404 );
+        res.send( err );
       } );
     } );
   } );

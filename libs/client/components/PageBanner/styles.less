@@ -1,33 +1,100 @@
 @import './../../globals.less';
 
+/* stylelint-disable selector-no-id */
+.overlay-enabled {
+  .component-page-banner {
+    z-index: 5;
+    .subtitle,
+    #section_0,
+    .mw-ui-icon-search {
+      visibility: hidden;
+    }
+    > div {
+      overflow: inherit;
+    }
+  }
+}
+
+.mw-ui-icon-search:before {
+	background-image: url(search.png);
+}
+
 .component-page-banner {
+  position: relative;
+  z-index: 2;
   max-height: none;
-  height: 140px;
-  overflow: hidden;
-  background-color: #fafafa;
+  height: @map-height;
+  background-color: #b9d4ee;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-  margin-left: -16px;
-  margin-right: -16px;
+
+  .card .card-detail,
+  .card h3 {
+    text-align: left;
+  }
+
+  .mw-ui-icon {
+    position: absolute;
+    right: -8px;
+    bottom: 8px;
+  }
+
+  .site-title {
+    padding-top: 8px;
+
+    border: 0;
+    a {
+      display: block;
+      width: 270px;
+      margin: 20px auto 0 auto;
+    }
+    img {
+      margin-top: 8px;
+    }
+  }
+
+	.subtitle,
+  a:visited,
+  a:hover,
+  a {
+    color: #5c4b40;
+  }
+
+  .content-container {
+    background: none;
+    text-align: center;
+    color: @app-bg-color;
+    text-transform: uppercase;
+  }
+
+  .map-marker {
+    position: absolute;
+    top: 50%;
+    right: 50%;
+    margin-top: -30px;
+    margin-right: -20px;
+  }
+
+  .subtitle {
+    font-weight: bold;
+    font-size: 0.8em;
+  }
 
   h1 {
-    position: absolute;
-    z-index: 1;
-    margin: 0.6em 0 0 0.4em;
     font-weight: bold;
-    padding: 8px 7px;
-    font-size: 1.2em !important;
-    background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.3);
-    border-radius: 4px;
-    color: #fff;
+    font-size: 1.7em;
+    font-family: sans-serif;
     white-space: nowrap;
-    line-height: 0.9em;
     overflow: hidden;
-    -webkit-text-overflow: ellipsis;
     text-overflow: ellipsis;
-    max-width: 95%;
+
+    &.title-long {
+      font-size: 1em;
+    }
   }
 
   > div {
+    left: -1px;
+    overflow: hidden;
     position: relative;
     display: block;
     height: 100%;
@@ -44,7 +111,11 @@
     margin-right: auto;
 
     h1 {
-      font-size: 2.2em !important;
+      font-size: 2.2em;
+
+      &.title-long {
+        font-size: 1.2em;
+      }
     }
   }
 }

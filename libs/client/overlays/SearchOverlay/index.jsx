@@ -1,6 +1,6 @@
 import React from 'react'
 import createReactClass from 'create-react-class'
-import { Icon, SearchForm, Panel } from 'wikipedia-react-components'
+import { SearchForm } from 'wikipedia-react-components'
 
 import CardList from './../../components/CardList'
 
@@ -27,6 +27,17 @@ export default createReactClass({
   showResults( endpoint, project ) {
     var self = this;
     var props = this.props;
+    var noResults = (
+      <div key="noresults" className="search-information">
+        <p>I'm sorry. I can't find the place you are dreaming of.</p>
+        <h2>Other options</h2>
+        <ul>
+          <li><a href="#/explore/">Find on map</a></li>
+          <li><a href="/en.wikivoyage/Special:Collections">Browse trips</a></li>
+          <li><a onClick={props.closeOverlay}>Never mind</a></li>
+        </ul>
+      </div>
+    )
     var language_proj = this.props.lang + '.' + project;
     clearTimeout( this._timeout );
     // account for fast key presses before firing off an api request
@@ -35,22 +46,12 @@ export default createReactClass({
         self.setState( {
           noResults: data.pages.length === 0,
           list: <CardList {...props} language_project={language_proj}
+            key="search-overlay-results"
+            emptyMessage={noResults}
             apiEndpoint={endpoint} infiniteScroll={false} />
         } );
       } );
     }, 200 );
-  },
-  onSearchWithinPages() {
-    this.onSearchSubmit( this.state.term );
-  },
-  onSearchSubmit( term ) {
-    var props = this.props;
-    var proj = props.lang + '.' + props.siteinfo.defaultProject;
-    props.router.navigateTo( null, '#' );
-    props.router.navigateTo( {
-      pathname: '/' + proj + '/Special:Search/' + encodeURIComponent( term ),
-      search: ''
-    }, 'Search' );
   },
   onSearch( term ){
     var endpoint, lowerTerm;
@@ -73,39 +74,32 @@ export default createReactClass({
       this.setState( { cards: [] } );
     }
   },
+  componentDidMount() {
+    document.querySelector('#mw-mf-page-center').scrollTop = 0;
+  },
   render(){
-    var heading, panel, msg;
-    var results = this.state && this.state.list ? this.state.list : '';
+    var results = this.state && this.state.list ? this.state.list :
+      <div key="search-overlay-results" className="search-information">
+        <p>Let's find a place that will blow your mind!</p>
+      </div>;
+
     var props = this.props;
-    var search = <SearchForm
+    var search = <SearchForm key="search-overlay-input-form"
       placeholder={props.msg( 'search' )}
       defaultValue={props.defaultValue}
-      onSearch={this.onSearch} onSearchSubmit={this.onSearchSubmit} focusOnRender="1" />;
-
-    if ( this.state.term ) {
-      msg = this.state.noResults ?
-        <span>No page with this title. <strong>Search within pages</strong> to see if this phrase appears anywhere.</span>
-        : 'Search within pages';
-      panel = (
-        <Panel>
-          <Icon glyph="search-content"
-            onClick={this.onSearchWithinPages}
-            type="before" label={msg} className="without-results" />
-        </Panel>
-      );
-    }
+      onSearch={this.onSearch} focusOnRender="1" />;
 
     // FIXME: search-overlay class is added only for consistency with MobileFrontend
     return (
-      <Overlay router={props.router} header={heading} search={search}
+      <Overlay router={props.router}
         siteinfo={props.siteinfo}
         onExit={props.onExit}
         primaryIcon={false}
+        fixed={false}
+        header={search}
         siteoptions={props.siteoptions}
-          chromeHeader={true}
         className="component-search-overlay search-overlay">
-        <div className="overlay-content">
-          {panel}
+        <div className="overlay-content" key="search-overlay-content">
           {results}
         </div>
       </Overlay>

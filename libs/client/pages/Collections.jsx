@@ -34,6 +34,7 @@ export default createReactClass({
       endpointPrefix = '/api/' + props.lang + '/collection';
 
     // reset
+    this.setMap();
     this.setState( { description: null, title: null, error: false, id: null,
       owner: null,
       defaultView: null, collections: null,
@@ -50,6 +51,7 @@ export default createReactClass({
           description: collection.description,
           bounds: calculateBoundsFromPages( collection.pages )
         } );
+        self.setMap();
       } ).catch( function () {
         self.setState( { error: true } );
       })
@@ -64,26 +66,51 @@ export default createReactClass({
       this.setState( { endpoint: endpoint, username: username, id: id } );
       props.api.fetch( endpoint ).then( function ( state ) {
         self.setState( state );
-        self.makeBannerImage();
+        self.setMap();
       } ).catch( function () {
         self.setState( { error: true } );
       })
       this.setState( { description: 'All collections by ' + username})
     } else if ( args.length === 0 || !args[0] ) {
       this.setState( { defaultView: true, username: false, endpoint: endpointPrefix } );
-      props.api.fetch( endpointPrefix ).then( function ( state ) {
-        self.makeBannerImage( state.collections );
-      } );
+      self.setMap();
     } else {
       props.router.navigateTo( '/' + props.lang + '/wiki/Special:Collections', null, true );
     }
+  },
+  setMap() {
+    var state = this.state;
+    var slogan = 'We will go on a trip';
+    var bounds = state.bounds;
+    if ( !bounds && state.collections ) {
+      bounds = calculateBoundsFromPages( state.collections );
+    } else {
+      bounds = { lat: 0, lon: 0, zoom: 1 };
+    }
+    var maplink;
+
+    if (state.id && state.username) {
+      maplink = '#/collection-map/' + state.username + '/' + state.id + '/';
+      slogan = 'we\'ll see';
+    } else if ( state.username ) {
+      maplink = '#/collection-map/' + state.username + '/';
+    } else {
+      maplink = '#/collection-map/';
+    }
+
+    this.props.setBannerProps( {
+      coordinates: { lat: bounds.lat, lon: bounds.lon },
+      maplink: maplink,
+      zoom: bounds.zoom,
+      slogan: slogan,
+      displaytitle: state.title || 'Someday'
+    })
   },
   componentDidMount() {
     this.load( this.props );
   },
   componentWillReceiveProps( props ) {
     this.load( props );
-    this.makeBannerImage();
   },
   getBody(){
     var props = this.props;
@@ -122,38 +149,6 @@ export default createReactClass({
     if ( href ) {
       ev.preventDefault();
       this.props.router.navigateTo( href );
-    }
-  },
-  makeBannerImage( collections ) {
-    var self = this;
-    var canvas = this.state.canvas || document.createElement( 'canvas' );
-
-    collections = collections || this.props.collections || this.state.collections;
-    canvas.setAttribute( 'height', '120' );
-    canvas.setAttribute( 'width', '800' );
-    this.setState( { banner: false, canvas: canvas, x: 0 } );
-
-    function loadIntoCanvas(img) {
-      var ctx = canvas.getContext( '2d' );
-      var x = self.state.x || 0;
-      ctx.drawImage( img, x, 0 );
-      self.setState( { banner: canvas.toDataURL(), x: x + img.width } );
-    }
-
-    if ( collections && collections.length ) {
-      collections.slice( 0, 5 ).forEach( function ( collection ) {
-        var img;
-        if ( collection.thumbnail ) {
-          img = new Image();
-          img.crossOrigin = 'Anonymous';
-          img.src = collection.thumbnail.source;
-          if ( img.complete ) {
-            loadIntoCanvas(img);
-          } else {
-            img.onload = ()=>loadIntoCanvas(img);
-          }
-        }
-      } );
     }
   },
   render() {
@@ -207,28 +202,18 @@ export default createReactClass({
         className={isDefaultView ? 'active' : ''}><TruncatedText>All</TruncatedText></a>
     ];
 
-    lead = {
-      banner: {
-        source: this.state.banner
-      }
-    };
-
     if ( username ) {
       tabs.push(
         <a key="collection-tab-2" href={'/' + lang + '/wiki/Special:Collections/by/' + username}
           onClick={this.props.onClickInternalLink}
-          className={!id && !isDefaultView ? 'active' : ''}><TruncatedText>{username}</TruncatedText></a>
+          className={!isDefaultView ? 'active' : ''}><TruncatedText>{username}</TruncatedText></a>
       );
 
-      if ( id ) {
+      if ( id && lead ) {
         tabs.push(
           <span key="collection-tab-3"
             className={title ? 'active' : ''}><TruncatedText>{title}</TruncatedText></span>
         )
-        lead = {
-          maplink: '#/collection-map/' + username + '/' + id + '/',
-          coordinates: this.state.bounds
-        };
         if ( isCollectionOwner ) {
           lead.note = 'User:' + title + '/lists/' + id;
         }

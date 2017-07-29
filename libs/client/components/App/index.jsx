@@ -1,12 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Icon, SearchForm } from 'wikipedia-react-components'
+import { Icon } from 'wikipedia-react-components'
 import createReactClass from 'create-react-class'
 
 import './styles.less'
 import './icons.less'
 
 import ChromeHeader from './../ChromeHeader'
+import PageBanner from './../PageBanner'
 
 import Toast from './../../overlays/Toast'
 
@@ -21,6 +22,10 @@ export default createReactClass({
   getInitialState() {
     return {
       pageviews: 0,
+      banner: {
+        zoom: 1,
+        coordinates: { lat: 0, lon: 0 }
+      },
       notification: '',
       checkedLoginStatus: false,
       offlineEnabled: false,
@@ -69,6 +74,7 @@ export default createReactClass({
       showNotification: this.showNotification,
       showOverlay: this.showOverlay,
       getLocalUrl: this.getLocalUrl,
+      setBannerProps: this.setBannerProps,
       closeOverlay: this.closeOverlay,
       hijackLinks: this.hijackLinks,
       offlineEnabled: this.state.offlineEnabled,
@@ -98,6 +104,7 @@ export default createReactClass({
   mount( props ) {
     if ( typeof document !== 'undefined' ) {
       this.mountOverlay( props );
+      this.setTitle(props.title);
 
       var localSession = this.getLocalSession();
       if ( !this.state.session ) {
@@ -251,22 +258,33 @@ export default createReactClass({
   onClickSearch(){
     this.props.router.navigateTo( '#/search' );
   },
-  getLocalUrl( title, params ) {
-    var source = this.props.language_project || this.props.lang + '/wiki';
+  getLocalUrl( title, params, source ) {
+    source = source || this.props.language_project || this.props.lang + '/wiki';
     title = title ? encodeURIComponent( title ).replace( '%3A', ':' ) : '';
     params = params ? '/' + encodeURIComponent( params ).replace( /%2F/g, '/' ) : '';
 
     return '/' + source + '/' + title + params;
+  },
+  setTitle( title ) {
+    const bannerProps = this.state.banner || { coordinates: { lat: 0, lon: 0 } };
+    bannerProps.displaytitle = title  || "Start somewhere";
+    this.setState({ banner: bannerProps, title: title });
+  },
+  setBannerProps( bannerProps ) {
+    const coords = bannerProps.coordinates;
+    if ( coords.lat === 0 && coords.lon === 0 && !bannerProps.maplink ) {
+      const defSlogan = bannerProps.displaytitle ? "We will see" : "We will see the world";
+      bannerProps.slogan = bannerProps.slogan || defSlogan;
+      bannerProps.displaytitle = bannerProps.displaytitle || "Start somewhere";
+      bannerProps.maplink = '#/explore/';
+    }
+    this.setState({ banner: bannerProps });
   },
   render(){
     var props = this.props;
     var state = this.state;
     var session = this.state.session;
     var username = session ? session.username : '~your device';
-    var search = (<SearchForm msg={this.props.msg}
-      placeholder={props.msg( 'search' )} key="chrome-search-form"
-      language_project={props.language_project}
-      onClickSearch={this.onClickSearch} />);
 
     var navigationClasses = this.state.isMenuOpen ?
       'primary-navigation-enabled navigation-enabled' : '';
@@ -297,35 +315,27 @@ export default createReactClass({
       secondaryIcon = null;
     }
 
+    var banner = state.banner || {};
+    const header = props.noHeader ? [] : [
+      <ChromeHeader {...props} session={state.session} key="app-header"
+        onClickLogout={this.clearSession}
+        onClickInternalLink={this.onClickInternalLink}
+        title={state.title || props.title} />,
+      <PageBanner {...this.props} coordinates={banner.coordinates}
+        maplink={banner.maplink} zoom={banner.zoom} slogan={banner.slogan}
+        title={banner.displaytitle}
+        key="article-page-banner">
+      </PageBanner>
+    ];
     return (
       <div id="mw-mf-viewport" className={navigationClasses}
         lang={this.props.lang} dir='ltr'>
         <div id="mw-mf-page-center" onClick={this.closePrimaryNav}>
-          <ChromeHeader {...props}
-            includeSiteBranding={true}
-            search={search} secondaryIcon={secondaryIcon}/>
+          {header}
           {this.state.children}
         </div>
         { overlay }
         { toast }
-        <svg>
-          <filter id="filter-normal-icon" colorInterpolationFilters="sRGB"
-            x="0" y="0" height="100%" width="100%">
-            <feColorMatrix type="matrix"
-              values="0.33 0    0    0 0
-                      0    0.35 0    0 0
-                      0    0    0.36 0 0
-                      0    0    0    1   0" />
-          </filter>
-          <filter id="filter-progressive-icon" colorInterpolationFilters="sRGB"
-            x="0" y="0" height="100%" width="100%">
-            <feColorMatrix type="matrix"
-              values="0.2 0   0   0 0
-                      0   0.4 0   0 0
-                      0   0   0.8 0 0
-                              0   0   0   1   0" />
-          </filter>
-        </svg>
       </div>
     )
   }

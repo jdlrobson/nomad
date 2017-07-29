@@ -1,6 +1,6 @@
 import React from 'react'
 import createReactClass from 'create-react-class'
-import { ErrorBox, IntermediateState, ListHeader,
+import { ErrorBox, IntermediateState,
   CardWithLocation, CardList } from 'wikipedia-react-components';
 
 import Content from './../Content'
@@ -9,10 +9,9 @@ import WatchIcon from './../WatchIcon'
 import './styles.less'
 
 const OFFLINE_ERROR = 'You do not have an internet connection';
-const MONTHS = ['January','February','March','April','May','June',
-  'July','August','September','October','November','December'];
 
 function getCards( data, props, keyPrefix ) {
+  keyPrefix = keyPrefix || '';
   var source = props.language_project ||
     ( props.language && props.project ? props.language + '.' + props.project : 'wiki' );
   var cards = [],
@@ -68,6 +67,7 @@ function getCards( data, props, keyPrefix ) {
       if ( typeof( navigator ) !== 'undefined' && !navigator.onLine && item.offline !== undefined && !item.offline ) {
         item.className = 'offline';
       }
+      item.source = source;
       cards.push( React.createElement( CardClass, Object.assign( {}, props, item ) ) );
     } );
   }
@@ -79,7 +79,6 @@ export default createReactClass({
     return {
       CardClass: CardWithLocation,
       infiniteScroll: true,
-      isDiffCardList: false,
       endpoint: null,
       continue: null,
       emptyMessage: 'The list is disappointedly empty.'
@@ -118,7 +117,6 @@ export default createReactClass({
       unordered: props.unordered,
       showNotification: props.showNotification,
       CardClass: props.CardClass,
-      isDiffCardList: props.isDiffCardList,
       emptyMessage: props.emptyMessage,
       router: props.router,
       api: api
@@ -180,10 +178,8 @@ export default createReactClass({
     }
   },
   render: function () {
-    var lastTs;
     var props = this.props;
-    var isDiffCardList = this.props.isDiffCardList;
-    var isUnordered = props.unordered && !isDiffCardList;
+    var isUnordered = props.unordered;
     var cards = this.state.cards;
     var owner = this.state.owner || props.owner;
     if ( props.pages && !cards ) {
@@ -192,7 +188,6 @@ export default createReactClass({
     if ( props.limit && cards ) {
       cards = cards.slice( 0, props.limit );
     }
-    var cardsAndHeaders = [];
     var continuer = props.continue && props.endpoint ?
       <div className='gutter' /> : null;
 
@@ -204,30 +199,12 @@ export default createReactClass({
       ];
     } else if ( !cards ) {
       cards = [<IntermediateState msg={this.props.loadingMessage} key="card-list-loading" />];
-    } else if ( isDiffCardList ) {
-      cards.forEach( function ( card, i ) {
-        var ts, header;
-        if ( card.props.timestamp ) {
-          ts = new Date( card.props.timestamp );
-          if ( !lastTs || ( ts.getDate() !== lastTs.getDate() ) ) {
-            header = (
-              <ListHeader key={'card-list-header-' + i + '-' + props.language_project}>
-                {ts.getDate()} {MONTHS[ts.getMonth()]} {ts.getFullYear()}
-              </ListHeader>
-            );
-            cardsAndHeaders.push( header );
-          }
-          lastTs = ts;
-        }
-        cardsAndHeaders.push( card );
-      } );
-      cards = cardsAndHeaders;
     }
     if ( continuer && !props.limit ) {
         cards.push( continuer );
     }
     return <CardList emptyMessage={props.emptyMessage}
         ordered={!isUnordered}
-        className={ isDiffCardList ? ' diff-list side-list' : props.className}>{cards}</CardList>;
+        className={props.className}>{cards}</CardList>;
   }
 } );

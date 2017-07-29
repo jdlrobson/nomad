@@ -1,6 +1,7 @@
 @import './../../globals.less';
 
 @tagline-font-size: .85em;
+@container-width: 500px;
 
 .mw-mf-cleanup {
   display: block;
@@ -39,13 +40,51 @@
 }
 
 .heading-holder {
+  height: 42px;
+  background: #c1b094;
   position: relative;
   overflow: hidden;
+  z-index: 1;
+
+  .make-note-component {
+    position: absolute;
+    left: 0;
+    top: 8px;
+  }
+
+  .tabs {
+    text-align: center;
+    margin: auto;
+    li {
+      margin-right: 0;
+
+      a {
+        display: block;
+        padding: 16px;
+        box-sizing: border-box;
+        text-align: center;
+        background: #00ab9f;
+        color: #fff;
+
+        &.active {
+          background: #008278;
+        }
+      }
+    }
+  }
+  .mw-ui-icon-watched,
+  .mw-ui-icon-watch {
+    position: absolute;
+    top: 8px;
+    right: 0;
+  }
 
   .tagline {
+    font-style: italic;
     color: #555555;
     font-size: @tagline-font-size;
-    margin: 7px 0 50px 0;
+    margin: 7px 0 20px;
+    padding-right: 72px;
 
     .special-page-heading & {
       margin-bottom: 0;
@@ -64,26 +103,6 @@
     }
   }
 }
-
-.standard-page-heading h1 {
-  border-bottom: 0;
-  padding: 0 0 7px 0;
-  font-size: 1.7em;
-  font-family: @font-family-serif;
-  line-height: 1.3;
-  word-wrap: break-word;
-  word-break: break-word;
-}
-
-.special-page-heading h1 {
-  font-family: @font-family-sans;
-  padding: 0.5em 0;
-  text-align: center;
-  font-size: 1.25em;
-  font-weight: bold;
-  border: 0;
-}
-
 .special-page-heading {
   .heading-holder {
     padding-bottom: 20px;
@@ -105,8 +124,15 @@
 }
 
 @media all and (min-width: 720px) {
+  .heading-holder {
+    .tabs {
+      a {
+        width: ( @container-width - 100 ) / 3;
+      }
+    }
+  }
   .tabs {
-
+    margin-left: 20px;
     span > * {
       max-width: 300px;
     }

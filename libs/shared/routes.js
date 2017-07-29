@@ -118,7 +118,7 @@ function addSpecialPage( title, Class, handler ) {
           lang, props.project, true ),
         desktopUrl: utils.getAbsoluteUrl( 'Special:' + title + suffix,
           lang, props.project ),
-        title: 'Special:' + title
+        isSpecialPage: true
       } );
       props.children = [
         React.createElement( Class,
@@ -150,7 +150,10 @@ function initSpecialPages() {
     return props;
   } );
   addSpecialPage( 'Shell', Shell );
-  addSpecialPage( 'UserLogin', UserLogin );
+  addSpecialPage( 'UserLogin', UserLogin, ( info, props ) => {
+    props.noHeader = true;
+    return props;
+  } );
   addSpecialPage( 'Collections', Collections, function ( info, props ) {
     props.fallback = '/api/' + props.lang + '/collection/';
     props.noIndex = false;
@@ -161,6 +164,7 @@ function initSpecialPages() {
   } );
   addSpecialPage( 'NomadHome', NomadHome, function ( info, props ) {
     props.fallback = '/api/random/' + props.lang;
+    props.title = '';
     return props;
   } );
 }
