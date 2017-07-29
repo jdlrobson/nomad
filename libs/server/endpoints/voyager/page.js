@@ -219,11 +219,16 @@ export default function ( title, lang, project, revision ) {
       var curSectionLine;
       var orientation = [];
       var itineraries = [];
+      const transitLinks = [];
+      const _seen = {};
+
       const SIGHT_HEADINGS = [ 'See', 'See & Do' ];
       const DESTINATION_BLACKLIST = [ 'Understand', 'Talk', 'See' ];
       const EXPLORE_HEADINGS = [ 'Regions', 'Districts', 'Countries', 'Get around', 'Listen',
         'Eat and drink', 'Counties', 'Prefectures', 'Fees/Permits', 'See',
         'Buy', 'Eat', 'Drink', 'Do' ];
+
+      const TRANSIT_LINK_HEADINGS = [ 'by train', 'by bus', 'by boat' ];
       const COUNTRY_SECTION_HEADINGS = [ 'regions' ];
       const REGION_SECTION_HEADINGS = [ 'cities', 'other destinations', 'cities and towns',
         'towns & villages', 'towns &amp; villages', 'the islands', 'islands',
@@ -277,6 +282,20 @@ export default function ( title, lang, project, revision ) {
           }
           sights = sights.filter(function( item, i ) {
             return sights.indexOf( item ) === i;
+          });
+        }
+
+        if ( TRANSIT_LINK_HEADINGS.indexOf( lcLine ) > -1 ) {
+          extractElements( section.text, 'a.external', true ).extracted.forEach( (a) => {
+            const href = a.getAttribute( 'href' );
+            // only list URLs
+            if ( href.indexOf( 'http' ) > -1 && !_seen[href] ) {
+              _seen[href] = true;
+              transitLinks.push( {
+                href: href,
+                text: a.textContent
+              } );
+            }
           });
         }
 
@@ -349,6 +368,7 @@ export default function ( title, lang, project, revision ) {
       data.lead.climate = climate;
       data.lead.isRegion = isRegion;
       data.lead.isCountry = isCountry;
+      data.lead.transitLinks = transitLinks;
       data.itineraries = itineraries;
       if ( !isRegion ) {
         data.lead.sights = sights;
