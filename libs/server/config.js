@@ -15,8 +15,10 @@ const DISABLE_SETTINGS = true;
 
 const SHOW_TALK_ANONS = Boolean( process.env.SHOW_TALK_ANONS );
 
-const DUMMY_SESSION = process.env.DEV_DUMMY_USER ? { dummy: true,
-  displayName: process.env.DEV_DUMMY_USER } : null
+const IS_DEV_MODE = NODE_ENV !== 'production'
+
+const DUMMY_SESSION = IS_DEV_MODE ? { dummy: true, displayName: "Traveller" } :
+  (process.env.DEV_DUMMY_USER ? { dummy: true, displayName: process.env.DEV_DUMMY_USER } : null )
 
 const ALL_PROJECTS = [ 'wikipedia', 'wikivoyage', 'wiktionary',
   'wikisource', 'wikiquote', 'wikinews', 'wikibooks', 'wikiversity' ].concat( SPECIAL_PROJECTS );
@@ -57,7 +59,6 @@ const HOST_SUFFIX = process.env.HOST_SUFFIX || '.org'
 const TABLE_OF_CONTENTS = Boolean( process.env.TABLE_OF_CONTENTS )
 
 const NODE_ENV = process.env.NODE_ENV
-const IS_DEV_MODE = NODE_ENV !== 'production'
 
 const MEDIAWIKI_COMPATIBILITY_MODE = Boolean( process.env.MEDIAWIKI_COMPATIBILITY_MODE );
 
