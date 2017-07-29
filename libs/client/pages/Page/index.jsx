@@ -354,6 +354,18 @@ export default React.createClass({
           </div>
         );
       }
+      if ( lead.transitLinks.length ) {
+        col3.push( <h2 key="transit-section-heading">Get around</h2> );
+        col3.push(
+          <ul>{
+            lead.transitLinks.map( function ( link, i ) {
+              return (
+                <li key={'transit-'+i}><a href={link.href} className="external">{link.text}</a></li>
+              );
+            } )
+          }</ul>
+        );
+      }
     }
 
     if ( sections.length === 0 && !lead.text ) {
