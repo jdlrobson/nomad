@@ -4,7 +4,6 @@ import { ErrorBox } from 'wikipedia-react-components'
 import Categories from './../client/pages/Categories'
 import Collections from './../client/pages/Collections'
 import Contributions from './../client/pages/Contributions'
-import History from './../client/pages/History'
 import Feed from './../client/pages/Feed'
 import Page from './../client/pages/Page'
 import PageInfo from './../client/pages/PageInfo'
@@ -158,7 +157,6 @@ function initSpecialPages() {
     props.noIndex = false;
     return props;
   } );
-  addSpecialPage( 'History', History );
   addSpecialPage( 'RecentChanges', Contributions );
   addSpecialPage( 'Contributions', Contributions );
   addSpecialPage( 'Watchlist', Watchlist );

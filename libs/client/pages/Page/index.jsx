@@ -2,7 +2,6 @@ import React from 'react'
 
 import { Button, ErrorBox, IntermediateState } from 'wikipedia-react-components';
 
-import LastModifiedBar from './LastModifiedBar'
 import TableOfContents from './TableOfContents'
 
 import ImageSlideshow from './../../components/ImageSlideshow'
@@ -195,22 +194,7 @@ export default React.createClass({
     return tabs;
   },
   getFooter( lead ) {
-    var footer = [];
-    var props = this.props;
-    if ( !lead ) {
-      return footer;
-    } else {
-      if ( lead.project_source ) {
-        return null;
-      }
-      footer = [
-        <LastModifiedBar editor={lead.lastmodifier} lang={props.lang}
-          language_project={props.language_project}
-          onClickInternalLink={props.onClickInternalLink}
-          title={props.title} timestamp={lead.lastmodified} key="page-last-modified" />
-      ];
-      return footer;
-    }
+    return null;
   },
   getBlankLeadSection( lead ) {
     return Object.assign( {}, lead, {
@@ -331,8 +315,8 @@ export default React.createClass({
       }
     }
     if ( foreign ) {
-      sections.push( <div className="editor-link">Content from <a
-        href={'/' + props.lang + '/' + foreign + '/Special:History/' + props.title}>Wikipedia</a></div> );
+      sections.push( <div className="editor-link">Read more on <a
+        href={'https://' + props.lang + '.wikipedia.org/wiki/' + props.title}>Wikipedia</a></div> );
     }
 
     lead.text = leadHtml;

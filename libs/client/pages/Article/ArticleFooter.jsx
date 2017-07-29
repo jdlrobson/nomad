@@ -28,18 +28,12 @@ class ArticleFooter extends Component {
       );
     }
 
-    if ( this.props.desktopUrl ) {
-      // FIXME: The stopMobileRedirectToggle class is only needed for compatibility with MobileFrontend browser tests
-      places.push( <a key="article-footer-desktop-url"
-        className="stopMobileRedirectToggle" href={this.props.desktopUrl}>Desktop</a> );
-    }
-
     return (
       <footer key="footer" className={"post-content footer " + footerClass}>
         {this.props.footer}
         <Content className="footer-info">
           {wordmark}
-          <div className="license">Content is available under <a className="external" rel="nofollow" href={license.url}>{license.name}</a> unless otherwise noted.</div>
+          <div className="license">Content derived from <a href={this.props.desktopUrl}>the Wikivoyage article</a> which is available under <a className="external" rel="nofollow" href={license.url}>{license.name}</a> unless otherwise noted.</div>
           <span>v. {this.props.offlineVersion}</span>
           <HorizontalList isSeparated="1">{places}</HorizontalList>
         </Content>
