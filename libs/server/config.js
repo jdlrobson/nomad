@@ -1,17 +1,17 @@
 const SPECIAL_PROJECTS = [ 'species', 'commons', 'meta' ]
-const API_PATH = process.env.API_PATH || '/api/'
+const API_PATH = process.env.API_PATH || '/api/voyager/'
 const APP_PORT = process.env.PORT || 3000
 
 const GCM_SENDER_ID = process.env.GCM_SENDER_ID
 const DEFAULT_LANGUAGE = process.env.LANGUAGE || 'en';
-const DEFAULT_PROJECT = process.env.PROJECT || 'wikipedia';
+const DEFAULT_PROJECT = process.env.PROJECT || 'wikivoyage';
 const EN_MESSAGE_PATH = './i18n/en.json';
 
-const ENABLE_COLLECTIONS = Boolean( process.env.ENABLE_COLLECTIONS );
-const COLLECTIONS_INCLUDE_WATCHLIST = Boolean( process.env.COLLECTIONS_INCLUDE_WATCHLIST );
+const ENABLE_COLLECTIONS = true;
+const COLLECTIONS_INCLUDE_WATCHLIST = false;
 
-const ENABLE_NEARBY = Boolean( process.env.ENABLE_NEARBY );
-const DISABLE_SETTINGS = Boolean( process.env.DISABLE_SETTINGS );
+const ENABLE_NEARBY = false;
+const DISABLE_SETTINGS = true;
 
 const SHOW_TALK_ANONS = Boolean( process.env.SHOW_TALK_ANONS );
 
@@ -33,19 +33,17 @@ const CONSUMER_KEY = process.env.MEDIAWIKI_CONSUMER_KEY
 const LANGUAGE_CODE = process.env.DEFAULT_LANGUAGE || 'en'
 const SIGN_IN_SUPPORTED = DUMMY_SESSION ? true : ( CONSUMER_SECRET && CONSUMER_KEY )
 
-const SITE_EXPAND_SECTIONS = process.env.SITE_EXPAND_SECTIONS ?
-  Boolean( parseInt( process.env.SITE_EXPAND_SECTIONS, 10 ) ) : false;
+const SITE_EXPAND_SECTIONS = true;
 
 const SITE_EXPAND_SECTIONS_TABLET = Boolean( process.env.SITE_EXPAND_SECTIONS_TABLET );
 
-const SITE_EXPAND_ARTICLE = process.env.SITE_EXPAND_ARTICLE ?
-  Boolean( process.env.SITE_EXPAND_ARTICLE ) : ( SITE_EXPAND_SECTIONS || SITE_EXPAND_SECTIONS_TABLET );
+const SITE_EXPAND_ARTICLE = true;
 
 const SERVER_SIDE_RENDERING = Boolean( process.env.SERVER_SIDE_RENDERING );
 
 const USE_HTTPS = Boolean( process.env.USE_HTTPS );
 
-const SITE_HOME = process.env.SITE_HOME || 'Main Page'
+const SITE_HOME = process.env.SITE_HOME || 'Special:NomadHome'
 
 const SITE_HOME_PATH = process.env.HOME_PAGE_PATH ? process.env.HOME_PAGE_PATH
   : ( '/' + DEFAULT_LANGUAGE + '.' + DEFAULT_PROJECT + '/' + SITE_HOME );
