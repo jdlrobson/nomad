@@ -4,7 +4,8 @@ import page from './../page'
 import mwApi from './../mwApi';
 import addProps from './../prop-enricher'
 
-import { extractElements, isNodeEmpty, cleanupScrubbedLists, extractText } from './domino-utils'
+import { extractElements, isNodeEmpty, cleanupScrubbedLists, extractText,
+   extractElementsTextContent } from './domino-utils'
 import extractDestinations from './extract-destinations'
 import extractImages from './extract-images'
 import climateExtraction from './extract-climate'
@@ -100,7 +101,11 @@ export default function ( title, lang, project, revision ) {
     return distance;
   }
 
-  function addSights( data ) {
+  /**
+   * @param {Object} data
+   * @param {Integer} a distance in km to filter by
+   */
+  function addSights( data, distance ) {
     var props = [ 'pageimages', 'pageterms', 'pageprops', 'coordinates' ];
     var landmark = data.lead.coordinates;
     if ( data.lead.sights && landmark ) {
@@ -109,11 +114,12 @@ export default function ( title, lang, project, revision ) {
       } )
         .then( ( sightPages ) => {
           data.lead.sights = sightPages.filter(
-            ( page )=> {
+            ( page ) => {
+              const distFromLandmark = page.coordinates && calculateDistance( page.coordinates, landmark );
               var isDisambiguation = page.pageprops && page.pageprops.disambiguation !== undefined;
               return !page.missing && !isDisambiguation && page.coordinates &&
                 // possibily too generous.. but check how many km away the sight is
-                calculateDistance( page.coordinates, landmark ) < 100;
+                distFromLandmark < distance;
             }
           );
           return data;
@@ -214,7 +220,7 @@ export default function ( title, lang, project, revision ) {
       var orientation = [];
       var itineraries = [];
       const SIGHT_HEADINGS = [ 'See', 'See & Do' ];
-      const DESTINATION_BLACKLIST = [ 'Understand', 'Talk' ];
+      const DESTINATION_BLACKLIST = [ 'Understand', 'Talk', 'See' ];
       const EXPLORE_HEADINGS = [ 'Regions', 'Districts', 'Countries', 'Get around', 'Listen',
         'Eat and drink', 'Counties', 'Prefectures', 'Fees/Permits', 'See',
         'Buy', 'Eat', 'Drink', 'Do' ];
@@ -259,11 +265,22 @@ export default function ( title, lang, project, revision ) {
         }
 
         var lcLine = section.line.toLowerCase();
-        if ( SIGHT_HEADINGS.indexOf( curSectionLine ) > -1 && !isRegion && !isCountry ) {
+        if ( SIGHT_HEADINGS.indexOf( curSectionLine ) > -1 ) {
           sights = sights.concat( extractBoldItems( section.text ) );
+          sights = sights.concat(
+            extractElementsTextContent( extractElements( section.text, 'a', true ).extracted )
+          // de-duplicate
+          );
+          if ( SIGHT_HEADINGS.indexOf( section.line ) === -1 ) {
+            // Maybe the heading itself is a place. e.g. Dali
+            sights.push( section.line );
+          }
+          sights = sights.filter(function( item, i ) {
+            return sights.indexOf( item ) === i;
+          });
         }
 
-        if ( REGION_SECTION_HEADINGS.indexOf( lcLine ) > -1 ) {
+        if ( REGION_SECTION_HEADINGS.indexOf( lcLine ) > -1  ) {
           isRegion = true;
         }
         if ( COUNTRY_SECTION_HEADINGS.indexOf( lcLine ) > -1 ) {
@@ -321,6 +338,11 @@ export default function ( title, lang, project, revision ) {
           }
         }
       } );
+      // if we think it's a country it's not a region.
+      // Pages like Panama may have false positives.
+      if ( isCountry ) {
+        isRegion = false;
+      }
       data.remaining.sections = sections;
       data.lead.images = data.lead.images.concat( allImages );
       data.lead.maps = allMaps;
@@ -328,7 +350,7 @@ export default function ( title, lang, project, revision ) {
       data.lead.isRegion = isRegion;
       data.lead.isCountry = isCountry;
       data.itineraries = itineraries;
-      if ( !isRegion && !isCountry ) {
+      if ( !isRegion ) {
         data.lead.sights = sights;
       }
       data.lead.isSubPage = isSubPage;
@@ -347,7 +369,12 @@ export default function ( title, lang, project, revision ) {
       if ( allDestinations.length || sights.length ) {
         return addNextCards( data, allDestinations, isRegion )
           .then( ( data ) => {
-            return addSights( data )
+            // Values for country based on China.
+            // Note this will give false positives for countries.
+            // e.g. Kaliningrad will not show up for Russia
+            // Cathedral of Notre Dame will show up for Luxembourg
+            // Ideally we'd be able to verify the parent country
+            return addSights( data, isCountry ? 8000 : 100 )
           } );
       } else {
         return data;
