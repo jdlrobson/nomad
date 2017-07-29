@@ -48,8 +48,11 @@
 }
 
 @media (min-width: 62.5em) {
-  .component-search-overlay .overlay-content {
-    max-width: 57.8em;
-    margin: auto;
+  .component-search-overlay {
+    .header.content-container,
+    .overlay-content {
+      max-width: @max-page-width;
+      margin: auto;
+    }
   }
 }
