@@ -1,6 +1,8 @@
 import React from 'react';
 import { IntermediateState } from 'wikipedia-react-components'
 
+import MakeNote from './../../components/MakeNote'
+
 import './styles.less'
 
 export default React.createClass({
@@ -28,17 +30,27 @@ export default React.createClass({
   },
   render: function () {
     var className = 'note';
-    var text;
+    var text, icon;
+    var props = this.props;
 
     if ( !this.state.loading ) {
-      text = this.state.text;
+      text = this.state.text || 'Want to capture some thoughts?\n\nClick the add note icon.';
+      if (  this.props.session ) {
+        icon = <MakeNote {...this.props} id={null} className="" title={props.title}
+          session={this.props.session} key="article-make-note" />;
+      }
       return (
         <div className={className}>
           <pre>{text}</pre>
+          {icon}
         </div>
       )
     } else {
-      return <IntermediateState className={className} />;
+      return (
+        <div className={className}>
+          <IntermediateState className={className} />
+        </div>
+      )
     }
   }
 } );
