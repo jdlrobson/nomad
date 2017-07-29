@@ -3,10 +3,10 @@
 footer,
 .footer-info {
   overflow: auto;
-  margin-top: 42px;
 }
 
 footer {
+  padding-top: 8px;
   border-top: solid 1px @footer-border-color;
   background-color: @footer-bg-color;
 
@@ -18,12 +18,6 @@ footer {
     padding-bottom: 0.5em;
     text-transform: uppercase;
     letter-spacing: 1px;
-  }
-
-  // Important needed to avoid incompatibility with .content-container
-  > .content-container,
-  > * {
-    margin-top: 42px;
   }
 
   .footer-info {
