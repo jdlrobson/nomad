@@ -6,8 +6,6 @@ import createReactClass from 'create-react-class'
 import './styles.less'
 import './icons.less'
 
-import MainMenu from './../MainMenu'
-import TransparentShield from './../TransparentShield'
 import ChromeHeader from './../ChromeHeader'
 
 import ReferenceDrawer from './../../overlays/ReferenceDrawer'
@@ -25,7 +23,6 @@ export default createReactClass({
   getInitialState() {
     return {
       pageviews: 0,
-      isMenuOpen: false,
       notification: '',
       checkedLoginStatus: false,
       offlineEnabled: false,
@@ -277,14 +274,7 @@ export default createReactClass({
     this.setState( { notification: null } );
   },
   closePrimaryNav(){
-    this.setState({ isMenuOpen: false });
     this.closeOverlay();
-  },
-  openPrimaryNav( ev ){
-    this.setState({ isMenuOpen: true });
-    this.closeOverlay();
-    ev.preventDefault();
-    ev.stopPropagation();
   },
   showNotification( msg ) {
     var self = this;
@@ -321,13 +311,6 @@ export default createReactClass({
     var navigationClasses = this.state.isMenuOpen ?
       'primary-navigation-enabled navigation-enabled' : '';
 
-    // FIXME: link should point to Special:MobileMenu
-    var icon = <Icon glyph="mainmenu" label="Home"
-      id="mw-mf-main-menu-button"
-      href={this.getLocalUrl( 'Special:MobileMenu' )}
-      onClick={this.openPrimaryNav}/>;
-    var shield = this.state.isMenuOpen ? <TransparentShield /> : null;
-
     var toast, secondaryIcon,
       isRTL = this.state.isRTL,
       overlay = this.state.isOverlayEnabled ? this.state.overlay : null;
@@ -338,10 +321,6 @@ export default createReactClass({
 
     if ( this.state.notification ) {
      toast = <Toast>{this.state.notification}</Toast>;
-    }
-
-    if ( props.showMenuNoJavaScript ) {
-      navigationClasses += ' navigation-full-screen';
     }
 
     secondaryIcon = [
@@ -362,17 +341,11 @@ export default createReactClass({
     return (
       <div id="mw-mf-viewport" className={navigationClasses}
         lang={this.props.lang} dir={isRTL ? 'rtl' : 'ltr'}>
-        <nav id="mw-mf-page-left">
-        <MainMenu {...this.props} onClickInternalLink={this.onClickInternalLink} onLogoutClick={this.clearSession}
-            onLoginClick={this.clearSession}
-            onItemClick={this.closePrimaryNav} session={this.state.session}/>
-        </nav>
         <div id="mw-mf-page-center" onClick={this.closePrimaryNav}>
-          <ChromeHeader {...props} primaryIcon={icon}
+          <ChromeHeader {...props}
             includeSiteBranding={true}
             search={search} secondaryIcon={secondaryIcon}/>
           {this.state.children}
-          {shield}
         </div>
         { overlay }
         { toast }
