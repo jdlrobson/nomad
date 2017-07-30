@@ -8,7 +8,6 @@ import './icons.less'
 
 import ChromeHeader from './../ChromeHeader'
 
-import ReferenceDrawer from './../../overlays/ReferenceDrawer'
 import Toast from './../../overlays/Toast'
 
 import isRTL from './../../is-rtl'
@@ -209,20 +208,13 @@ export default createReactClass({
     } );
   },
   onClickInternalLink( ev ) {
-    var href, parts, match, refId, title, path;
+    var href, parts, match, title, path;
     var link = ev.currentTarget;
     var childNode = link.firstChild;
-    var parentNode = link.parentNode;
     var props = this.props;
     var allowForeignProjects = props.siteoptions.allowForeignProjects;
 
-    if ( parentNode.className === 'mw-ref' ) {
-      ev.preventDefault();
-      ev.stopPropagation();
-      refId = link.getAttribute( 'href' ).split( '#' )[1];
-      this.showOverlay( <ReferenceDrawer {...props} refId={refId} hijackLinks={this.hijackLinks} /> );
-
-    } else if ( childNode && childNode.nodeName === 'IMG' ) {
+    if ( childNode && childNode.nodeName === 'IMG' ) {
       href = link.getAttribute( 'href' ) || '';
       match = href.match( /\.\/File\:(.*)|^File\:(.*)$/ );
       if ( match ) {
