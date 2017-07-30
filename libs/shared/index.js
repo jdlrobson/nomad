@@ -22,16 +22,6 @@ function init( config, routes ) {
       function ( info, props, query ) {
         return router.matchRoute( props.siteinfo.home, '#', props, query )
       }
-    ],
-    [
-      /^\/([a-z\-]*)\/wiki\/Category(\%3A|:)(.*)|^\/.*\/Category(\%3A|:)(.*)$/,
-      function ( info, props ) {
-        var lang = info[1] || 'en';
-        var params = info[5] || info[3] || '';
-        var newPath = '/' + lang + '/wiki/Special:Categories/' + params;
-
-        return router.matchRoute( newPath, '', props );
-      }
     ]
   );
 

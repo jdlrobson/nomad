@@ -29,13 +29,7 @@ export default createReactClass({
         key="page-talk-tab">Talk</a>,
       <a href={getLocalUrl('Special:Collections', 'by/' + titleSansPrefix)}
         onClick={onClickInternalLink}
-        key="page-collections-tab">{props.msg( 'menu-collections' )}</a>,
-      <a href={getLocalUrl('Special:Contributions', titleSansPrefix)}
-        onClick={onClickInternalLink}
-        key="page-contrib-tab">Contributions</a>,
-      <a href={getLocalUrl('Special:Uploads', titleSansPrefix )}
-        onClick={onClickInternalLink}
-        key="page-upload-tab">Uploads</a>
+        key="page-collections-tab">{props.msg( 'menu-collections' )}</a>
     ];
   },
   render(){

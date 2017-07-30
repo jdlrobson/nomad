@@ -1,23 +1,13 @@
 import React from 'react'
 import { ErrorBox } from 'wikipedia-react-components'
 
-import Categories from './../client/pages/Categories'
 import Collections from './../client/pages/Collections'
-import Contributions from './../client/pages/Contributions'
-import Feed from './../client/pages/Feed'
 import Page from './../client/pages/Page'
-import PageInfo from './../client/pages/PageInfo'
 import SpecialPage from './../client/pages/SpecialPage'
-import MobileDiff from './../client/pages/MobileDiff'
-import MobileOptions from './../client/pages/MobileOptions'
-import MostRead from './../client/pages/MostRead'
 import Random from './../client/pages/Random'
 import Search from './../client/pages/Search'
 import Shell from './../client/pages/Shell'
-import Nearby from './../client/pages/Nearby'
-import Watchlist from './../client/pages/Watchlist'
 import UserLogin from './../client/pages/UserLogin'
-import Uploads from './../client/pages/Uploads'
 
 import Content from './../client/components/Content'
 import NomadHome from './../client/pages/NomadHome'
@@ -81,11 +71,7 @@ var routes = [
           )
         ];
       } else {
-        if ( action === 'info' ) {
-          View = PageInfo;
-        } else {
-          View = Page;
-        }
+        View = Page;
         props.title = titleDecoded;
         props.fallback = '/api/voyager/page/' + props.language_project + '/' + title;
         props.children = [
@@ -151,18 +137,6 @@ function addSpecialPage( title, Class, handler ) {
 }
 
 function initSpecialPages() {
-  addSpecialPage( 'Categories', Categories );
-  addSpecialPage( 'Feed', Feed, ( info, props ) => {
-    props.noIndex = false;
-    return props;
-  } );
-  addSpecialPage( 'RecentChanges', Contributions );
-  addSpecialPage( 'Contributions', Contributions );
-  addSpecialPage( 'Watchlist', Watchlist );
-  addSpecialPage( 'EditWatchlist', Watchlist );
-  addSpecialPage( 'MobileDiff', MobileDiff );
-  addSpecialPage( 'MobileOptions', MobileOptions );
-  addSpecialPage( 'MostRead', MostRead );
   addSpecialPage( 'Random', Random, function ( info, props ) {
     props.fallback = '/api/random/' + props.lang;
     props.noIndex = false;
@@ -176,7 +150,6 @@ function initSpecialPages() {
     return props;
   } );
   addSpecialPage( 'Shell', Shell );
-  addSpecialPage( 'Nearby', Nearby );
   addSpecialPage( 'UserLogin', UserLogin );
   addSpecialPage( 'Collections', Collections, function ( info, props ) {
     props.fallback = '/api/' + props.lang + '/collection/';
@@ -186,7 +159,6 @@ function initSpecialPages() {
     }
     return props;
   } );
-  addSpecialPage( 'Uploads', Uploads );
   addSpecialPage( 'NomadHome', NomadHome, function ( info, props ) {
     props.fallback = '/api/random/' + props.lang;
     return props;

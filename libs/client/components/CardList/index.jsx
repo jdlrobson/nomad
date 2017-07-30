@@ -39,9 +39,7 @@ function getCards( data, props, keyPrefix ) {
           props.router.navigateTo( { pathname: href }, title );
         }
       };
-      if ( item.revid ) {
-        item.url = '/' + source + '/Special:MobileDiff/' + item.revid;
-      } else if ( !item.url && item.title ) {
+      if ( !item.url && item.title ) {
         item.url = '/' + source + '/' + encodeURIComponent( item.title );
       }
       // some endpoints e.g. related endpoint return titles with `_`
