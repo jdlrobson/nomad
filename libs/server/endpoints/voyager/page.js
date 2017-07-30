@@ -226,7 +226,7 @@ export default function ( title, lang, project, revision ) {
       const DESTINATION_BLACKLIST = [ 'Understand', 'Talk', 'See' ];
       const EXPLORE_HEADINGS = [ 'Regions', 'Districts', 'Countries', 'Get around', 'Listen',
         'Eat and drink', 'Counties', 'Prefectures', 'Fees/Permits', 'See',
-        'Buy', 'Eat', 'Drink', 'Do' ];
+        'Buy', 'Eat', 'Drink', 'Do', 'Smoke' ];
 
       const TRANSIT_LINK_HEADINGS = [ 'by train', 'by bus', 'by boat' ];
       const COUNTRY_SECTION_HEADINGS = [ 'regions' ];
