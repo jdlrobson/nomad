@@ -206,7 +206,7 @@ function initPostMethods( app ) {
 
 function initGetMethods( app ) {
   app.get( '/api/random/:lang/', ( req, res ) => {
-    return cachedResponse( res, null, function () {
+    return cachedResponse( res, req.url, function () {
       var param,
         params = {};
       for ( param in [ 'picontinue', 'continue' ] ) {
