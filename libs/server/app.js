@@ -17,8 +17,6 @@ import respond from './respond'
 
 import initVoyagerRoutes from './express-voyager-routes'
 
-import isRTL from './../client/is-rtl'
-
 import { API_PATH, DEFAULT_PROJECT, MEDIAWIKI_COMPATIBILITY_MODE,
   GCM_SENDER_ID, SITE_HOME_PATH, TABLE_OF_CONTENTS, SHOW_TALK_ANONS,
   SITE_ALLOW_FOREIGN_PROJECTS, ALLOWED_PROJECTS,
@@ -259,7 +257,6 @@ app.get( '/:lang?/*', ( req, res ) => {
       description: desc,
       page_title: title,
       place: place,
-      isRTL: isRTL( req.params.lang ),
       config: JSON.stringify( config ),
       body: !req.user && SERVER_SIDE_RENDERING ?
         ReactDOMServer.renderToString(

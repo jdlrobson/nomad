@@ -10,7 +10,6 @@ class EmptyCardList extends Component {
       path = props.image;
 
     if ( path ) {
-      path = props.isRTL ? path.replace( 'ltr', 'rtl' ) : path;
       img = <img src={path} />;
     }
     if ( props.ctaMessage ) {

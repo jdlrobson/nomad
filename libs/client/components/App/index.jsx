@@ -10,7 +10,6 @@ import ChromeHeader from './../ChromeHeader'
 
 import Toast from './../../overlays/Toast'
 
-import isRTL from './../../is-rtl'
 import initOffline from './../../offline'
 
 const APP_SESSION_KEY = 'app-session'
@@ -25,7 +24,6 @@ export default createReactClass({
       notification: '',
       checkedLoginStatus: false,
       offlineEnabled: false,
-      isRTL: false,
       lang: 'en',
       session: null,
       isOverlayFullScreen: true,
@@ -73,7 +71,6 @@ export default createReactClass({
       getLocalUrl: this.getLocalUrl,
       closeOverlay: this.closeOverlay,
       hijackLinks: this.hijackLinks,
-      isRTL: isRTL( props.lang ),
       offlineEnabled: this.state.offlineEnabled,
       session: session || this.state.session,
       onClickInternalLink: this.onClickInternalLink
@@ -84,34 +81,6 @@ export default createReactClass({
 
     var children = React.Children.map( props.children, ( child ) => React.cloneElement( child, childProps ) );
     this.setState( { children: children, pageviews: this.state.pageviews + 1 } );
-  },
-  mountLanguage( props ) {
-    var newStylesheet,
-      self = this,
-      newLang = props.uselang || props.lang,
-      rtl = isRTL( newLang ),
-      stylesheet = document.querySelector( 'link[href="/style.rtl.css"]' );
-
-    function addStylesheet( newPath ) {
-      newStylesheet = document.createElement( 'link' )
-      newStylesheet.setAttribute( 'rel', 'stylesheet' );
-      newStylesheet.setAttribute( 'href', newPath );
-      document.body.appendChild( newStylesheet );
-    }
-
-    if ( rtl && !this.state.isRTL && !stylesheet ) {
-      addStylesheet( '/style.rtl.css' );
-    } else if ( !rtl && this.state.isRTL && stylesheet ) {
-      stylesheet.parentNode.removeChild( stylesheet );
-    }
-
-    this.setState( { isRTL: rtl } );
-    if ( newLang !== this.state.lang ) {
-      props.api.fetch( '/api/messages/' + newLang ).then( function ( msgs ) {
-        props.messages.load( msgs );
-        self.setState( { lang: newLang } );
-      } );
-    }
   },
   getLocalSession() {
     var localSession = this.props.storage.get( APP_SESSION_KEY );
@@ -128,7 +97,6 @@ export default createReactClass({
   },
   mount( props ) {
     if ( typeof document !== 'undefined' ) {
-      this.mountLanguage( props );
       this.mountOverlay( props );
 
       var localSession = this.getLocalSession();
@@ -304,7 +272,6 @@ export default createReactClass({
       'primary-navigation-enabled navigation-enabled' : '';
 
     var toast, secondaryIcon,
-      isRTL = this.state.isRTL,
       overlay = this.state.isOverlayEnabled ? this.state.overlay : null;
 
     if ( overlay ) {
@@ -332,7 +299,7 @@ export default createReactClass({
 
     return (
       <div id="mw-mf-viewport" className={navigationClasses}
-        lang={this.props.lang} dir={isRTL ? 'rtl' : 'ltr'}>
+        lang={this.props.lang} dir='ltr'>
         <div id="mw-mf-page-center" onClick={this.closePrimaryNav}>
           <ChromeHeader {...props}
             includeSiteBranding={true}
