@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Icon, SearchForm } from 'wikipedia-react-components'
+import createReactClass from 'create-react-class'
 
 import './styles.less'
 import './icons.less'
@@ -20,7 +21,7 @@ const APP_SESSION_KEY = 'app-session'
 var globalSession;
 
 // Main component
-export default React.createClass({
+export default createReactClass({
   getInitialState() {
     return {
       pageviews: 0,

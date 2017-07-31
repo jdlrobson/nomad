@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+import createReactClass from 'create-react-class'
 
 import CardList from './../components/CardList'
 import CollectionCard from './../components/CollectionCard'
@@ -12,7 +13,7 @@ import calculateBoundsFromPages from './../calculate-bounds-from-pages'
 const COLLECTIONS_ARE_NOT_ORDERED = false;
 
 // Pages
-export default React.createClass({
+export default createReactClass({
   getInitialState() {
     return {
       bounds: null,
