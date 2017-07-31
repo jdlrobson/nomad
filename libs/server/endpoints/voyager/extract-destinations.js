@@ -48,9 +48,9 @@ function extractDestinations( section, originalTitle ) {
     }
   } );
   // exclude the original title
-  destinations = destinations.filter((a)=>{
+  destinations = destinations.filter( ( a )=> {
     return a.title !== originalTitle;
-  })
+  } )
   section.destinations = destinations;
   section.text = cleanupScrubbedLists( ext.document.body.innerHTML );
   section.seeAlso = seeAlso;

@@ -110,7 +110,7 @@ function queryStringToObject( search ) {
 }
 
 function matchRoute( path, fragment, props, query ) {
-	var serverMode = typeof window === 'undefined';
+  var serverMode = typeof window === 'undefined';
 
   if ( query === undefined && !serverMode ) {
     query = queryStringToObject( window.location.search );
@@ -122,7 +122,6 @@ function matchRoute( path, fragment, props, query ) {
   // avoid chaos
   delete childProps.children;
   delete childProps.key;
-
 
   var fragmentRoute = serverMode ? null :
     matchFragment( fragment || window.location.hash || '#', childProps );

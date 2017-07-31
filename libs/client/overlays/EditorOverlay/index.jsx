@@ -107,7 +107,7 @@ export default React.createClass({
         state.summary || props.editSummary ).then( function ( resp ) {
         escape( resp.edit.newrevid );
         props.showNotification( 'Your edit was successful!' );
-      } ).catch( function (e) {
+      } ).catch( function () {
         self.showPreview();
       } );
     }

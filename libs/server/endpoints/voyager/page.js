@@ -103,7 +103,7 @@ export default function ( title, lang, project, revision ) {
 
   /**
    * @param {Object} data
-   * @param {Integer} a distance in km to filter by
+   * @param {Integer} distance in km to filter by
    */
   function addSights( data, distance ) {
     var props = [ 'pageimages', 'pageterms', 'pageprops', 'coordinates' ];
@@ -280,13 +280,13 @@ export default function ( title, lang, project, revision ) {
             // Maybe the heading itself is a place. e.g. Dali
             sights.push( section.line );
           }
-          sights = sights.filter(function( item, i ) {
+          sights = sights.filter( function ( item, i ) {
             return sights.indexOf( item ) === i;
-          });
+          } );
         }
 
         if ( TRANSIT_LINK_HEADINGS.indexOf( lcLine ) > -1 ) {
-          extractElements( section.text, 'a.external', true ).extracted.forEach( (a) => {
+          extractElements( section.text, 'a.external', true ).extracted.forEach( ( a ) => {
             const href = a.getAttribute( 'href' );
             // only list URLs
             if ( href.indexOf( 'http' ) > -1 && !_seen[href] ) {
@@ -296,7 +296,7 @@ export default function ( title, lang, project, revision ) {
                 text: a.textContent
               } );
             }
-          });
+          } );
         }
 
         if ( REGION_SECTION_HEADINGS.indexOf( lcLine ) > -1  ) {

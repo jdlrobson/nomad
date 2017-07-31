@@ -193,7 +193,7 @@ export default React.createClass({
 
     return tabs;
   },
-  getFooter( lead ) {
+  getFooter() {
     return null;
   },
   getBlankLeadSection( lead ) {

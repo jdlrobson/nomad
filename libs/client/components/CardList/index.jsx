@@ -60,7 +60,6 @@ function getCards( data, props, keyPrefix ) {
           source: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Sin_mapa.svg/320px-Sin_mapa.svg.png'
         };
       }
-      var session = props.session;
       var isOwner = ( session && data.owner === session.username ) || data.private;
       if ( isOwner && props.collection ) {
         item.indicator = <WatchIcon {...props}

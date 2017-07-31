@@ -1,7 +1,6 @@
 import { extractElements, extractElementsTextContent } from './domino-utils'
 
 function extractBoldItems( html ) {
-  var items = [];
   var ext = extractElements( html, 'li b:first-child' );
   var items = extractElementsTextContent( ext.extracted );
   if ( items.length === 0 ) {

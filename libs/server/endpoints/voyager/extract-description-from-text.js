@@ -21,7 +21,7 @@ export default function ( text ) {
     if ( match && match[1] ) {
       res = match[1].trim();
     } else {
-      console.log( `WARNING extraction-destination-from-text failed with ${text}`);
+      console.log( `WARNING extraction-destination-from-text failed with ${text}` );
     }
   }
   return res;

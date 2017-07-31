@@ -1,9 +1,7 @@
-import React, { Component } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom'
 
 import './styles.less'
-
-import { IntermediateState } from 'wikipedia-react-components'
 
 import Overlay from './../Overlay'
 
