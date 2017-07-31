@@ -4,6 +4,20 @@ function isNodeEmpty( node ) {
   return node.textContent.replace( /[↵ \n\t]/gi, '' ).length === 0
 }
 
+function cleanStrayPunctuation( node ) {
+  var children = node.childNodes;
+  Array.prototype.forEach.call( children, ( child ) => {
+    if ( child.childNodes.length ) {
+      cleanStrayPunctuation( child );
+    } else {
+      if ( !child.textContent.replace( /[\.\, ]*/g, '' ).length ) {
+        child.parentNode.removeChild( child );
+      }
+    }
+  } );
+  return node.innerHTML;
+}
+
 function mergeAdjacentLists( list ) {
   var nextSibling;
   if ( list && list.parentNode ) {
@@ -108,5 +122,5 @@ function extractText( html ) {
 }
 
 export { isNodeEmpty, extractElements, extractText, cleanupScrubbedLists,
-   extractElementsTextContent };
+   extractElementsTextContent, cleanStrayPunctuation };
 

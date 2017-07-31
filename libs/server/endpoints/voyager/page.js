@@ -4,6 +4,7 @@ import page from './../page'
 import mwApi from './../mwApi';
 import addProps from './../prop-enricher'
 
+import cleanVcards from './clean-vcards'
 import { extractElements, isNodeEmpty, cleanupScrubbedLists, extractText,
    extractElementsTextContent } from './domino-utils'
 import extractDestinations from './extract-destinations'
@@ -198,7 +199,7 @@ export default function ( title, lang, project, revision ) {
 
   function cleanup( section ) {
     var ext = extractElements( section.text, ITEMS_TO_DELETE.join( ',' ) );
-    section.text = cleanupScrubbedLists( ext.html );
+    section.text = cleanVcards( cleanupScrubbedLists( ext.html ) )  ;
     return section;
   }
 
