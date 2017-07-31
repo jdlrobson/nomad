@@ -1,9 +1,10 @@
 import React from 'react'
 import { Icon } from 'wikipedia-react-components'
+import createReactClass from 'create-react-class'
 
 import './styles.less'
 
-export default React.createClass({
+export default createReactClass({
   getInitialState() {
     return {
       numImages: 0,

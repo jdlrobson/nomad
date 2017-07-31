@@ -1,8 +1,9 @@
 import React from 'react'
+import createReactClass from 'create-react-class'
 
 import './styles.less'
 
-export default React.createClass({
+export default createReactClass({
   onChange( ev ) {
     this.setState( { month: ev.currentTarget.value })
   },

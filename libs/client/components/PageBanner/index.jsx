@@ -1,10 +1,11 @@
 import React from 'react'
+import createReactClass from 'create-react-class'
 
 import Content from './../Content'
 
 import './styles.less'
 
-export default React.createClass({
+export default createReactClass({
   navigateTo: function ( ev ) {
     var props = this.props;
     if ( props.banner.link ) {

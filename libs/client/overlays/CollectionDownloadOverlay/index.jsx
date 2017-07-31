@@ -1,11 +1,12 @@
 import React from 'react'
+import createReactClass from 'create-react-class'
 
 import Overlay from './../Overlay'
 import { Button, IntermediateState, ErrorBox } from 'wikipedia-react-components'
 
 import './styles.less'
 
-export default React.createClass({
+export default createReactClass({
   getInitialState() {
     return {};
   },

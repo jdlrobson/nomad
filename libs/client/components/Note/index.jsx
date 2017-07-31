@@ -1,11 +1,12 @@
 import React from 'react';
 import { IntermediateState } from 'wikipedia-react-components'
+import createReactClass from 'create-react-class'
 
 import MakeNote from './../../components/MakeNote'
 
 import './styles.less'
 
-export default React.createClass({
+export default createReactClass({
   getInitialState() {
     return { loading: true };
   },

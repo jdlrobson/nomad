@@ -2,6 +2,7 @@ import React from 'react';
 import { divIcon, icon } from 'leaflet';
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
 import { IntermediateState, Card } from 'wikipedia-react-components'
+import createReactClass from 'create-react-class'
 
 import calculateBoundsFromPages from './../../calculate-bounds-from-pages'
 
@@ -18,7 +19,7 @@ function param( args ) {
   return array.join( '&' );
 }
 
-export default React.createClass({
+export default createReactClass({
   getDefaultProps() {
     return {
       continue: false,

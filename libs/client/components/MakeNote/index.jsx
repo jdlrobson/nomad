@@ -1,9 +1,10 @@
 import React from 'react'
 import { Icon } from 'wikipedia-react-components'
+import createReactClass from 'create-react-class'
 
 import CtaIcon from './../CtaIcon'
 
-export default React.createClass({
+export default createReactClass({
   render(){
     var props = this.props;
     var username = props.session ? props.session.username : null;

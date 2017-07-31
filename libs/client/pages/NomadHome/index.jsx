@@ -1,4 +1,5 @@
 import React from 'react'
+import createReactClass from 'create-react-class'
 
 import CardList from './../../components/CardList'
 
@@ -8,7 +9,7 @@ import PagePreviewOverlay from './../../overlays/PagePreviewOverlay'
 import './styles.less'
 
 // Pages
-export default React.createClass({
+export default createReactClass({
   getDefaultProps: function () {
     return {
       api: null,

@@ -1,9 +1,10 @@
 import React from 'react'
+import createReactClass from 'create-react-class'
 
 import CardList from './CardList'
 import EditorLink from './EditorLink'
 
-export default React.createClass({
+export default createReactClass({
   getInitialState(){
     return {
       wikitext: ''
