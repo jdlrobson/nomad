@@ -3,26 +3,11 @@ import React from 'react'
 import EditorOverlay from './overlays/EditorOverlay'
 import CollectionEditorOverlay from './overlays/CollectionEditorOverlay'
 import ImageOverlay from './overlays/ImageOverlay'
-import LanguageOverlay from './overlays/LanguageOverlay'
 import SearchOverlay from './overlays/SearchOverlay'
-import TalkOverlay from './overlays/TalkOverlay'
-import IssuesOverlay from './overlays/IssuesOverlay'
 import MapOverlay from './overlays/MapOverlay'
 import CollectionDownloadOverlay from './overlays/CollectionDownloadOverlay'
 
 export default [
-  // Talk Overlay
-  [
-    /^#\/talk\/?([^\/]*)$/,
-    function ( info, props ) {
-      var overlayProps = Object.assign( {}, props, {
-        section: info[1]
-      } );
-      return {
-        overlay: React.createElement( TalkOverlay, overlayProps )
-      }
-    }
-  ],
   // Random map Overlay
   [
     /^#\/explore\/$/,
@@ -156,24 +141,6 @@ export default [
       } );
       return {
         overlay: React.createElement( CollectionEditorOverlay, overlayProps )
-      }
-    }
-  ],
-  // Languages
-  [
-    /^#\/languages$/,
-    function ( info, props ) {
-      return {
-        overlay: React.createElement( LanguageOverlay, props )
-      }
-    }
-  ],
-  // Issues
-  [
-    /^#\/issues$/,
-    function ( info, props ) {
-      return {
-        overlay: React.createElement( IssuesOverlay, props )
       }
     }
   ],
