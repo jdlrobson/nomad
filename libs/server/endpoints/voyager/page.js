@@ -33,7 +33,17 @@ const ITEMS_TO_DELETE = [
 
 // Haven't worked out what to do with these yet.
 const sectionBlacklist = [ 'Learn', 'Work', 'Stay safe', 'Stay healthy',
-  'Cope', 'Respect', 'Connect' ];
+  'Cope', 'Respect', 'Connect',
+  // Relying on our climate widget. For countries e.g. New Zealand
+  // let's try and pull out key words.
+  'Climate',
+  // TODO: Extract dates and show per month e.g. New Zealand
+  'Holidays',
+  // TMI. e.g. New Zealand
+  'People',
+  'Time zones',
+  'Politics',
+  'History' ];
 
 const TITLE_BLACKLIST = [ 'Travel topics' ];
 
@@ -229,6 +239,7 @@ export default function ( title, lang, project, revision ) {
       var allDestinations = [];
       var allMaps = [];
       var curSectionLine;
+      var curSectionSubheadingLine;
       var orientation = [];
       var itineraries = [];
       const transitLinks = [];
@@ -274,6 +285,10 @@ export default function ( title, lang, project, revision ) {
         }
         if ( section.toclevel === 1 ) {
           curSectionLine = section.line;
+          curSectionSubheadingLine  = undefined;
+        }
+        if ( section.toclevel === 2 ) {
+          curSectionSubheadingLine = section.line;
         }
 
         if ( [ 'Itineraries' ].indexOf( section.line ) > -1 ) {
@@ -364,7 +379,9 @@ export default function ( title, lang, project, revision ) {
             'Get in', 'Sleep', 'Talk' ].indexOf( curSectionLine ) > -1
           ) {
             logistics.push( section );
-          } else if ( sectionBlacklist.indexOf( curSectionLine ) === -1 ) {
+          } else if ( sectionBlacklist.indexOf( curSectionLine ) === -1 &&
+            sectionBlacklist.indexOf( curSectionSubheadingLine ) === -1
+          ) {
             sections.push( section );
           }
         }
