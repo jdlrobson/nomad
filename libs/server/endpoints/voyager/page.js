@@ -15,6 +15,8 @@ import extractBoldItems from './extract-bold-items'
 import thumbnailFromTitle from './../collection/thumbnail-from-title'
 
 const ITEMS_TO_DELETE = [
+  // should be handled upstream (https://gerrit.wikimedia.org/r/370371)
+  '.dablink',
   '.mw-kartographer-maplink',
   '.pp_infobox',
   // otherwise you'll have destination links from the outline box.
