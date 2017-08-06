@@ -11,6 +11,7 @@ import extractDestinations from './extract-destinations'
 import extractImages from './extract-images'
 import climateExtraction from './extract-climate'
 import extractBoldItems from './extract-bold-items'
+import flattenElements from './flatten-elements'
 
 import thumbnailFromTitle from './../collection/thumbnail-from-title'
 
@@ -36,6 +37,11 @@ const sectionBlacklist = [ 'Learn', 'Work', 'Stay safe', 'Stay healthy',
 
 const TITLE_BLACKLIST = [ 'Travel topics' ];
 
+function flattenLinksInHtml( html ) {
+  const window = domino.createWindow( html );
+  flattenElements( window.document, 'a' );
+  return window.document.body.innerHTML;
+}
 export default function ( title, lang, project, revision ) {
   project = 'wikivoyage';
   // FIXME: This can be done in mobile content service
@@ -359,6 +365,7 @@ export default function ( title, lang, project, revision ) {
             sections.push( section );
           }
         }
+        section.line = flattenLinksInHtml( section.line )
       } );
       // if we think it's a country it's not a region.
       // Pages like Panama may have false positives.
