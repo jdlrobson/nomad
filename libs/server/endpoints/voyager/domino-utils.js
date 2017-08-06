@@ -82,7 +82,7 @@ function cleanupScrubbedLists( text ) {
 
 function extractElements( html, selector, doNotRemove ) {
   var extracted = [],
-    window = domino.createWindow( '<div>' + html + '</div>' ),
+    window = domino.createWindow( html ),
     document = window.document;
 
   Array.prototype.forEach.call( document.querySelectorAll( selector ), function ( node ) {
@@ -98,7 +98,8 @@ function extractElements( html, selector, doNotRemove ) {
   return {
     extracted: extracted,
     document: document,
-    html: document.body.innerHTML
+    // if body is empty it will also be removed!
+    html: document.body ? document.body.innerHTML : ''
   };
 }
 
