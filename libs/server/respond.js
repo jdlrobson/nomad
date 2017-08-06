@@ -14,7 +14,8 @@ function respond( res, method ) {
     }
     res.status( code );
     res.send( JSON.stringify( {
-      msg: msg
+      msg: msg,
+      stack: error.stack.split( '\n' )
     } ) );
   } );
 }

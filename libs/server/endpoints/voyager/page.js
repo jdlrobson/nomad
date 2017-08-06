@@ -60,9 +60,9 @@ export default function ( title, lang, project, revision ) {
       if ( page && page.coordinates ) {
         data.lead.coordinates = page.coordinates.length ? page.coordinates[0] : page.coordinates;
       } else if ( page && page.pageassessments && ( page.pageassessments.topic || page.pageassessments.phrasebook ) ) {
-        throw '404EXCLUDE: This is a topic/phrasebook and not supported by the app.';
+        throw new Error( '404EXCLUDE: This is a topic/phrasebook and not supported by the app.' );
       } else if ( TITLE_BLACKLIST.indexOf( page.title ) > -1 ) {
-        throw '404EXCLUDE: Blacklisted page';
+        throw new Error( '404EXCLUDE: Blacklisted page' );
       }
 
       data.lead.images = [];
@@ -422,8 +422,16 @@ export default function ( title, lang, project, revision ) {
     }
   }
   return page( title, lang, project, false, revision ).then( transform ).catch( function ( err ) {
-    if ( err.indexOf( '404EXCLUDE' ) > -1 ) {
-      throw '404';
+    var msg = err && err.msg && err.msg;
+    if ( !msg ) {
+      msg = err.toString();
+    }
+
+    if ( msg && msg.indexOf( '404EXCLUDE' ) > -1 ) {
+      throw new Error( '404' );
+    // Any other 404s we'll route via wikipedia.org
+    } else if ( msg && msg.indexOf( '404' ) === -1 ) {
+      throw err;
     }
     return page( title, lang, 'wikipedia' ).then( function ( json ) {
       json.remaining = { sections: [] };
