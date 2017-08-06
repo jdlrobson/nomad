@@ -68,8 +68,11 @@ export default function ( title, lang, project, revision ) {
       data.lead.images = [];
       if ( page && page.pageprops ) {
         title = page.pageprops.wpb_banner;
+        const lcBannerTitle = title && title.toLowerCase();
         width = 300;
-        if ( title ) {
+        if ( title && lcBannerTitle.indexOf( ' default banner' ) === -1 &&
+          lcBannerTitle.indexOf( 'pagebanner default.jpg' ) === -1
+        ) {
           data.lead.images = [{
             caption: '',
             href: './File:' + title,
@@ -283,12 +286,12 @@ export default function ( title, lang, project, revision ) {
           sights = sights.concat( extractBoldItems( section.text ) );
           sights = sights.concat(
             extractElementsTextContent( extractElements( section.text, 'a', true ).extracted )
-          // de-duplicate
           );
           if ( SIGHT_HEADINGS.indexOf( section.line ) === -1 ) {
             // Maybe the heading itself is a place. e.g. Dali
             sights.push( section.line );
           }
+          // de-duplicate
           sights = sights.filter( function ( item, i ) {
             return sights.indexOf( item ) === i;
           } );
@@ -381,6 +384,15 @@ export default function ( title, lang, project, revision ) {
       data.lead.transitLinks = transitLinks;
       data.itineraries = itineraries;
       if ( !isRegion ) {
+        const numPossibleSights = sights.length;
+        sights.forEach( ( sight, i ) => {
+          const words = sight.split( ' ' );
+          if ( i < numPossibleSights && words.length === 2 ) {
+            // if 2 words we also switch them
+            // e.g. Castle Coole may be Coole Castle.
+            sights.push( words[1] + ' ' + words[0] );
+          }
+        } );
         data.lead.sights = sights;
       }
       data.lead.isSubPage = isSubPage;
