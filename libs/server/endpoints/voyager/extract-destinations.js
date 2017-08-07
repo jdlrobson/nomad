@@ -86,7 +86,21 @@ function extractFromList( html ) {
   } );
   html = ext.document.body.innerHTML.trim();
 
-  ext = extractElements( html, '.vcard .listing-name > *, li > a:first-child, li > b:first-child, li > i:first-child', true );
+  // vcard method
+  ext = extractElements( html, '.vcard .listing-name > b > a', true );
+  Array.prototype.forEach.call( ext.extracted, function ( node ) {
+    const title = node.getAttribute( 'title' );
+    const listItem = getParentWithTag( node, 'LI' );
+    node.parentNode.removeChild( node );
+    if ( listItem.parentNode ) {
+      listItem.parentNode.removeChild( listItem );
+    }
+    titles.push( { title: title,
+      description: listItem.textContent.trim() } );
+  } );
+  html = ext.document.body.innerHTML.trim();
+
+  ext = extractElements( html, 'li > a:first-child, li > b:first-child, li > i:first-child', true );
   Array.prototype.forEach.call( ext.extracted, function ( node ) {
     var attr, text, listItem,
       isExternalLink = false,
