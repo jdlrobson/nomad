@@ -52,6 +52,11 @@ function flattenLinksInHtml( html ) {
   flattenElements( window.document, 'a' );
   return window.document.body.innerHTML;
 }
+
+function removeNodes( html, selector ) {
+  var ext = extractElements( html, selector );
+  return cleanupScrubbedLists( ext.html );
+}
 export default function ( title, lang, project, revision ) {
   project = 'wikivoyage';
   // FIXME: This can be done in mobile content service
@@ -219,8 +224,7 @@ export default function ( title, lang, project, revision ) {
   }
 
   function cleanup( section ) {
-    var ext = extractElements( section.text, ITEMS_TO_DELETE.join( ',' ) );
-    section.text = cleanVcards( cleanupScrubbedLists( ext.html ) )  ;
+    section.text = cleanVcards( removeNodes( section.text, ITEMS_TO_DELETE.join( ',' ) ) );
     return section;
   }
 
