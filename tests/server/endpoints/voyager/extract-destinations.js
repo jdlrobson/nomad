@@ -161,6 +161,29 @@ describe('extract-destinations', function() {
     assert.ok( section.text.indexOf( 'Derby' ) === -1 );
   });
 
+  it('Morocco(2)', () => {
+    var section = {
+      text: '<div><ul><li><span class="vcard"><span id="Merzouga" class="fn org listing-name"><b><a href="./Merzouga" title="Merzouga">Merzouga</a></b></span></span> (Arabic: <b>مرزوقة</b>, Berber: ⵎⴰⵔⵣⵓⴳⴰ) and <span class="vcard"><span id="M.27Hamid" class="fn org listing-name"><b><a href="./M\'Hamid" title="M\'Hamid">M\'Hamid</a></b></span></span> (Arabic: <b>محاميد الغزلان</b>, Berber: ⵜⴰⵔⴰⴳⴰⵍⵜ) – From either of these two settlements at the edge of the Sahara, ride a camel or 4x4 into the desert for a night (or a week) among the dunes and under the stars</li></ul></div>'
+    };
+
+    section = extract( section );
+    assert.strictEqual( section.destinations.length, 2 );
+    assert.strictEqual( section.destinations[0].title, 'Merzouga' );
+    assert.strictEqual( section.destinations[1].title, 'M\'Hamid' );
+    assert.ok( section.text.indexOf('Berber') === -1, 'content was scrubbed' );
+  })
+  it('Morocco', () => {
+    var section = {
+      text: '<div><ul><li><span class="vcard"><span id="Rabat" class="fn org listing-name"><b><a href="./Rabat" title="Rabat">Rabat</a></b></span></span> (Arabic: <b>الرِّبَاط</b>, Berber: ⵕⵕⴱⴰⵟ) – The capital of Morocco; very relaxed and hassle-free, highlights include a 12th-century tower and minaret.</li></ul></div>'
+    };
+
+    section = extract( section );
+    assert.strictEqual( section.destinations.length, 1 );
+    assert.strictEqual( section.destinations[0].title, 'Rabat' );
+    assert.strictEqual( section.destinations[0].description, '(Arabic: الرِّبَاط, Berber: ⵕⵕⴱⴰⵟ) – The capital of Morocco; very relaxed and hassle-free, highlights include a 12th-century tower and minaret.' );
+    assert.ok( section.text.indexOf('Berber') === -1, 'content was scrubbed' );
+  });
+
   it('Brescia', function() {
     var section = {
       text: '<div><p>The <i><a href="/wiki/Franciacorta" title="Franciacorta">Franciacorta</a></i> region south of the Lake Iseo boasts opportunities to taste some of the finest (and most expensive) <a href="https://en.wikipedia.org/wiki/Franciacorta_DOCG" class="extiw" title="w:Franciacorta DOCG">wines</a> in Italy, as well as tour vineyards and cantinas.</p></div>'
