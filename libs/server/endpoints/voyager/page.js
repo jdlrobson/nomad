@@ -5,12 +5,11 @@ import mwApi from './../mwApi';
 import addProps from './../prop-enricher'
 
 import cleanVcards from './clean-vcards'
-import { extractElements, isNodeEmpty, cleanupScrubbedLists, extractText,
-   extractElementsTextContent } from './domino-utils'
+import extractSightsFromText from './extract-sights-from-text'
+import { extractElements, isNodeEmpty, cleanupScrubbedLists, extractText } from './domino-utils'
 import extractDestinations from './extract-destinations'
 import extractImages from './extract-images'
 import climateExtraction from './extract-climate'
-import extractBoldItems from './extract-bold-items'
 import flattenElements from './flatten-elements'
 
 import thumbnailFromTitle from './../collection/thumbnail-from-title'
@@ -302,17 +301,7 @@ export default function ( title, lang, project, revision ) {
 
         var lcLine = section.line.toLowerCase();
         if ( SIGHT_HEADINGS.indexOf( curSectionLine ) > -1 ) {
-          sights = sights.concat( extractBoldItems( section.text ) );
-          // sister site links e.g. Panama City
-          const sisterSiteLink = extractElements( section.text, '.listing-sister a', true )
-          if ( sisterSiteLink.extracted.length ) {
-            sisterSiteLink.extracted.forEach( ( sister ) => {
-              sights.push( sister.getAttribute( 'href' ).replace( './W:', '' ).replace( /_/g, ' ' ) );
-            } );
-          }
-          sights = sights.concat(
-            extractElementsTextContent( extractElements( section.text, 'a', true ).extracted )
-          );
+          sights = sights.concat( extractSightsFromText( section.text ) );
           if ( SIGHT_HEADINGS.indexOf( section.line ) === -1 ) {
             // Maybe the heading itself is a place. e.g. Dali
             sights.push( section.line );
@@ -385,6 +374,10 @@ export default function ( title, lang, project, revision ) {
           }
 
           if ( EXPLORE_HEADINGS.indexOf( curSectionLine ) > -1 ) {
+            // Don't list things here. You're not Tripadvisor/Foursquare/Yelp
+            if ( ['Eat', 'Drink', 'Buy'].indexOf( curSectionLine ) > -1 ) {
+              section.text = removeNodes( section.text, 'ul,ol' );
+            }
             orientation.push( section );
           } else if ( [
             'Get in', 'Sleep', 'Talk' ].indexOf( curSectionLine ) > -1
