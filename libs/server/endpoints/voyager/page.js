@@ -303,6 +303,13 @@ export default function ( title, lang, project, revision ) {
         var lcLine = section.line.toLowerCase();
         if ( SIGHT_HEADINGS.indexOf( curSectionLine ) > -1 ) {
           sights = sights.concat( extractBoldItems( section.text ) );
+          // sister site links e.g. Panama City
+          const sisterSiteLink = extractElements( section.text, '.listing-sister a', true )
+          if ( sisterSiteLink.extracted.length ) {
+            sisterSiteLink.extracted.forEach( ( sister ) => {
+              sights.push( sister.getAttribute( 'href' ).replace( './W:', '' ).replace( /_/g, ' ' ) );
+            } );
+          }
           sights = sights.concat(
             extractElementsTextContent( extractElements( section.text, 'a', true ).extracted )
           );
@@ -310,10 +317,6 @@ export default function ( title, lang, project, revision ) {
             // Maybe the heading itself is a place. e.g. Dali
             sights.push( section.line );
           }
-          // de-duplicate
-          sights = sights.filter( function ( item, i ) {
-            return sights.indexOf( item ) === i;
-          } );
         }
 
         if ( TRANSIT_LINK_HEADINGS.indexOf( lcLine ) > -1 ) {
@@ -410,6 +413,7 @@ export default function ( title, lang, project, revision ) {
       data.itineraries = itineraries;
       if ( !isRegion ) {
         const numPossibleSights = sights.length;
+
         sights.forEach( ( sight, i ) => {
           const words = sight.split( ' ' );
           const segments = sight.split( / - / );
@@ -428,6 +432,14 @@ export default function ( title, lang, project, revision ) {
           if ( theLessSight !== sight ) {
             sights.push( theLessSight );
           }
+        } );
+        // de-duplicate
+        const matches = {};
+        sights = sights.filter( function ( item ) {
+          const key = item.toLowerCase();
+          const matched = matches[key];
+          matches[key] = true;
+          return !matched;
         } );
         data.lead.sights = sights;
       }
