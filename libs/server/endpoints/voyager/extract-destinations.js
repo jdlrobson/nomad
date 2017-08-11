@@ -1,6 +1,7 @@
 import { cleanupScrubbedLists, extractElements, isNodeEmpty } from './domino-utils'
 
 import extractDescFromText from './extract-description-from-text'
+import getParentWithTag from './get-parent-with-tag'
 
 function has( array, title ) {
   var needle = false;
@@ -55,16 +56,6 @@ function extractDestinations( section, originalTitle ) {
   section.text = cleanupScrubbedLists( ext.document.body.innerHTML );
   section.seeAlso = seeAlso;
   return section;
-}
-
-function getParentWithTag( node, tag ) {
-  if ( !node ) {
-    return false;
-  } else if ( node.tagName === tag ) {
-    return node;
-  } else {
-    return getParentWithTag( node.parentNode, tag );
-  }
 }
 
 function extractFromList( html ) {
