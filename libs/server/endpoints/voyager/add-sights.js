@@ -22,6 +22,9 @@ function addAliases( sights ) {
       aliases[segments[0]] = sight;
       aliases[segments[1]] = sight;
     }
+    if ( sight.indexOf( '(' ) > -1 ) {
+      aliases[sight.replace( /\(.*\)/, '' ).trim()] = sight;
+    }
     if ( theLessSight !== sight ) {
       aliases[theLessSight] = sight;
     }
