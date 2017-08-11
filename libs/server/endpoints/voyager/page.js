@@ -58,6 +58,8 @@ function removeNodes( html, selector ) {
 }
 export default function ( title, lang, project, revision ) {
   project = 'wikivoyage';
+  const warnings = [];
+
   // FIXME: This can be done in mobile content service
   function addBannerAndCoords( data ) {
     var width;
@@ -143,6 +145,15 @@ export default function ( title, lang, project, revision ) {
             ( page ) => {
               const distFromLandmark = page.coordinates && calculateDistance( page.coordinates, landmark );
               var isDisambiguation = page.pageprops && page.pageprops.disambiguation !== undefined;
+              if ( page.missing ) {
+                warnings.push( `sight ${page.title} is missing` );
+              } else if ( !distFromLandmark ) {
+                warnings.push( `sight ${page.title} is missing coordinates` );
+              } else if ( distFromLandmark > distance ) {
+                warnings.push( `sight ${page.title} is ${distFromLandmark} away` );
+              } else if ( isDisambiguation ) {
+                warnings.push( `sight ${page.title} needs disambiguating` );
+              }
               return !page.missing && !isDisambiguation && page.coordinates &&
                 // possibily too generous.. but check how many km away the sight is
                 distFromLandmark < distance;
@@ -449,6 +460,9 @@ export default function ( title, lang, project, revision ) {
         data.orientation = orientation;
       }
 
+      // add warnings
+      data.warnings = warnings;
+
       if ( allDestinations.length || sights.length ) {
         return addNextCards( data, allDestinations, isRegion )
           .then( ( data ) => {
@@ -457,7 +471,7 @@ export default function ( title, lang, project, revision ) {
             // e.g. Kaliningrad will not show up for Russia
             // Cathedral of Notre Dame will show up for Luxembourg
             // Ideally we'd be able to verify the parent country
-            return addSights( data, isCountry ? 8000 : 120 )
+            return addSights( data, isCountry ? 8000 : 120 );
           } );
       } else {
         return data;
