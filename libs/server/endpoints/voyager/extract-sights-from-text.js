@@ -2,12 +2,13 @@ import extractBoldItems from './extract-bold-items'
 import { extractElements, extractElementsTextContent } from './domino-utils'
 import getParentWithTag from './get-parent-with-tag'
 
-export default function ( text ) {
+export default function ( doc ) {
+  let text = doc.body.innerHTML;
   let sights = [];
   // sister site links e.g. Panama City
-  const sisterSiteLink = extractElements( text, '.listing-sister a', true )
-  if ( sisterSiteLink.extracted.length ) {
-    sisterSiteLink.extracted.forEach( ( sister ) => {
+  const sisterSiteLink = doc.querySelectorAll( '.listing-sister a' );
+  if ( sisterSiteLink.length ) {
+    sisterSiteLink.forEach( ( sister ) => {
       sights.push( sister.getAttribute( 'href' ).replace( './W:', '' ).replace( /_/g, ' ' ) );
       const listItem = getParentWithTag( sister, 'LI' );
       if ( listItem && listItem.parentNode ) {
@@ -16,7 +17,7 @@ export default function ( text ) {
     } );
   }
 
-  text = sisterSiteLink.document.body.innerHTML;
+  text = doc.body.innerHTML;
   sights = sights.concat(
     extractBoldItems( text )
   ).concat(
