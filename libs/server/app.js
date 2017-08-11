@@ -142,7 +142,7 @@ app.get( '/auth/whoamithistime', function ( req, res ) {
       if ( user ) {
         resolve( user );
       } else {
-        throw 'Not logged in';
+        throw new Error( 'Not logged in' );
       }
     } );
   } );
