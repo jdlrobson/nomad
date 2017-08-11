@@ -353,35 +353,6 @@ export default function ( title, lang, project, revision ) {
       data.lead.transitLinks = transitLinks;
       data.itineraries = itineraries;
       if ( !isRegion ) {
-        const numPossibleSights = sights.length;
-
-        sights.forEach( ( sight, i ) => {
-          const words = sight.split( ' ' );
-          const segments = sight.split( / - / );
-          const theLessSight = sight.replace( /[Tt]he /, '' );
-          if ( i < numPossibleSights && words.length === 2 ) {
-            // if 2 words we also switch them
-            // e.g. Castle Coole may be Coole Castle.
-            sights.push( words[1] + ' ' + words[0] );
-          }
-          // e.g. The Eastern States Exposition - "The Big E"
-          // on Springfield%20(Massachusetts)
-          if ( segments.length === 2 ) {
-            sights.push( segments[0] );
-            sights.push( segments[1] );
-          }
-          if ( theLessSight !== sight ) {
-            sights.push( theLessSight );
-          }
-        } );
-        // de-duplicate
-        const matches = {};
-        sights = sights.filter( function ( item ) {
-          const key = item.toLowerCase();
-          const matched = matches[key];
-          matches[key] = true;
-          return !matched;
-        } );
         data.lead.sights = sights;
       }
       data.lead.isSubPage = isSubPage;
