@@ -17,6 +17,8 @@ import MakeNote from './../../components/MakeNote'
 
 import Content from './../../components/Content'
 
+import PagePreviewOverlay from './../../overlays/PagePreviewOverlay'
+
 import WikiPage from './../WikiPage'
 import UserPage from './../UserPage'
 
@@ -50,6 +52,13 @@ export default createReactClass({
       error: false,
       remaining: null
     };
+  },
+  launchOverlay( ev, item ) {
+    var props = this.props;
+    ev.preventDefault();
+    this.props.showOverlay( <PagePreviewOverlay
+      onClickInternalLink={props.onClickInternalLink}
+      getLocalUrl={props.getLocalUrl} item={item} /> );
   },
   // You want to load subscriptions not only when the component update but also when it gets mounted.
   componentDidMount(){
@@ -234,6 +243,7 @@ export default createReactClass({
       foreign = lead.project_source,
       footer = this.getFooter( lead ),
       lang = this.props.lang,
+      self = this,
       coords = lead ? lead.coordinates : null,
       remainingSections = this.getSections();
 
@@ -293,7 +303,7 @@ export default createReactClass({
         col3.push( <h2
           dangerouslySetInnerHTML={ {__html: section.line }} key={"section-heading-" + section.id}></h2> );
         col3.push( <CardList key={"page-destinations-" + section.id }
-          {...props} pages={section.destinations} /> );
+          {...props} pages={section.destinations} onCardClick={self.launchOverlay} /> );
         if ( session ) {
           col3.push( <a key={"editor-link-" + section.id}
             className="editor-link" href={"#/editor/"+ section.id}>Edit original source</a> );
@@ -310,6 +320,7 @@ export default createReactClass({
             session={session}
             language_project={props.language_project}
             foreign={lead.project_source}
+            onCardClick={this.launchOverlay}
             key="nearby-widget-card-list" section={lead.destinations_id}
             router={props.router} />
         );
@@ -340,7 +351,7 @@ export default createReactClass({
       if ( sights.length ) {
         col3.push( <h2 key="sights-section-heading">Sights</h2> );
         col3.push( <CardList key={"page-sights"}
-          {...props} pages={sights} />
+          {...props} pages={sights} onCardClick={this.launchOverlay} />
         );
       }
     } else {
