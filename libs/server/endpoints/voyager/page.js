@@ -398,7 +398,42 @@ export default function ( title, lang, project, revision ) {
       return voyager( json );
     }
   }
-  return page( title, lang, project, false, revision ).then( transform ).catch( function ( err ) {
+  return page( title, lang, project, false, revision ).then( transform )
+    .then( function ( page ) {
+      if ( !page.code ) {
+        const coords = page.lead.coordinates;
+        if ( page.lead.images.length < 6 ) {
+          var params = {
+            prop: 'pageimages',
+            generator: 'geosearch',
+            ggsradius: '10000',
+            ggsnamespace: 6,
+            pithumbsize: 400,
+            ggslimit: 50,
+            ggscoord: `${coords.lat}|${coords.lon}`
+          };
+          return mwApi( 'en', params, 'commons' ).then( ( query ) => {
+            page.lead.images = page.lead.images.concat(
+              query.pages.map( ( page ) => {
+                const thumb = page.thumbnail;
+                return {
+                  caption: '',
+                  href: `./${page.title}`,
+                  src: thumb.source,
+                  width: thumb.width,
+                  height: thumb.height
+                }
+              } )
+            );
+            return page;
+          } ).catch( ()=> {
+            return page;
+          } )
+        }
+      }
+      return page;
+    } )
+    .catch( function ( err ) {
     var msg = err && err.msg && err.msg;
     if ( !msg ) {
       msg = err.toString();
