@@ -418,11 +418,16 @@ export default function ( title, lang, project, revision ) {
                 const thumb = page.thumbnail;
                 return {
                   caption: '',
-                  href: `./${page.title}`,
+                  href: `./${page.title.replace( / /g, '_' )}`,
                   src: thumb.source,
                   width: thumb.width,
                   height: thumb.height
                 }
+              } )
+            );
+            page.lead.media = page.lead.media.concat(
+              query.pages.map( ( page ) => {
+                return page.title;
               } )
             );
             return page;
