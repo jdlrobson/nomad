@@ -138,7 +138,7 @@ export default function ( title, lang, project, revision ) {
     extractWarnings( section )
     var ext = extractElements( section.text, 'table' );
     if ( ext.extracted.length ) {
-      section.infobox = '<table> ' + ext.extracted[0].innerHTML + '</table>';
+      section.infobox = flattenLinksInHtml( `<table>${ext.extracted[0].innerHTML}</table>` );
     }
     section.text = ext.html;
     return section;
