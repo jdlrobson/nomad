@@ -318,11 +318,6 @@ export default function ( title, lang, project, revision ) {
             }
           }
 
-          section.isEmpty = isSectionEmpty( section );
-          if ( section.isEmpty ) {
-            section.text = '';
-          }
-
           if ( EXPLORE_HEADINGS.indexOf( curSectionLine ) > -1 ) {
             // Don't list things here. You're not Tripadvisor/Foursquare/Yelp
             if ( ['Eat', 'Drink', 'Buy'].indexOf( curSectionLine ) > -1 ) {
@@ -339,7 +334,11 @@ export default function ( title, lang, project, revision ) {
             sections.push( section );
           }
         }
-        section.line = flattenLinksInHtml( section.line )
+        section.line = flattenLinksInHtml( section.line );
+        section.isEmpty = isSectionEmpty( section );
+        if ( section.isEmpty ) {
+          section.text = '';
+        }
       } );
       // if we think it's a country it's not a region.
       // Pages like Panama may have false positives.
