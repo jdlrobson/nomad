@@ -56,6 +56,7 @@ function removeNodes( html, selector ) {
   var ext = extractElements( html, selector );
   return cleanupScrubbedLists( ext.html );
 }
+
 export default function ( title, lang, project, revision ) {
   project = 'wikivoyage';
   const warnings = [];
@@ -124,12 +125,18 @@ export default function ( title, lang, project, revision ) {
       } );
   }
 
-  function extractWarningsAndInfobox( section ) {
+  function extractWarnings( section ) {
     var ext = extractElements( section.text, '.pp_warningbox' );
     if ( ext.extracted.length ) {
       section.warnings = '<table> ' + ext.extracted[0].innerHTML + '</table>';
     }
-    ext = extractElements( ext.html, 'table' );
+    section.text = ext.html;
+    return section;
+  }
+
+  function extractWarningsAndInfobox( section ) {
+    extractWarnings( section )
+    var ext = extractElements( section.text, 'table' );
     if ( ext.extracted.length ) {
       section.infobox = '<table> ' + ext.extracted[0].innerHTML + '</table>';
     }
@@ -230,6 +237,7 @@ export default function ( title, lang, project, revision ) {
       delete newSection.maps;
 
       data.remaining.sections.forEach( function ( section ) {
+        section = extractWarnings( section );
         // reset Go next section
         if ( cardSectionTocLevel !== undefined && section.toclevel <= cardSectionTocLevel ) {
           cardSectionTocLevel = undefined;
