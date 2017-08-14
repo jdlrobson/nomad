@@ -13,6 +13,7 @@ import climateExtraction from './extract-climate'
 import flattenElements from './flatten-elements'
 import addSights from './add-sights'
 import thumbnailFromTitle from './../collection/thumbnail-from-title'
+import undoLinkFlatten from './undo-link-flatten'
 
 const ITEMS_TO_DELETE = [
   // should be handled upstream (https://gerrit.wikimedia.org/r/370371)
@@ -315,7 +316,9 @@ export default function ( title, lang, project, revision ) {
 
           if ( cardSectionTocLevel !== undefined && !isSubPage ) {
             if ( DESTINATION_BLACKLIST.indexOf( curSectionLine ) === -1 ) {
+              section.text = undoLinkFlatten(section.text);
               section = extractDestinations( section, title );
+
               if ( section.destinations ) {
                 if ( section.line !== curSectionLine && curSectionLine === 'Go next' ) {
                   // On pages like Wellington, go next has subheadings
