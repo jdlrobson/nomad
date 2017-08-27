@@ -6,6 +6,8 @@ import CollectionCard from './../../components/CollectionCard'
 
 import Overlay from './../Overlay'
 
+import calculateBounds from './../../calculate-bounds-from-pages'
+
 import './styles.less'
 
 export default createReactClass({
@@ -78,8 +80,13 @@ export default createReactClass({
 
     endpoint += props.id  ? props.id + '/edit' : '_/create';
     this.setState( { waiting: true } );
+    var bounds;
+    if ( this.state.pages ) {
+      bounds = calculateBounds(this.state.pages);
+    }
     props.api.post( endpoint, {
       title: this.state.title,
+      coordinates: bounds ? { lat: bounds.lat, lon: bounds.lon } : null,
       image: this.state.thumbnail ? this.state.thumbnail.title : null,
       description: this.state.description
     } ).then( function ( json ) {

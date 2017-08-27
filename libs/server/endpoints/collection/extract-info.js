@@ -1,7 +1,7 @@
 import thumbFromTitle from './thumbnail-from-title.js'
 
 function info( pageTitle, body, timestamp, image ) {
-  var title,
+  var title, coordinates,
     lines = body.split( '\n' ),
     m = lines[0].match( /'''(.*)'''/ ),
     args = pageTitle.split( '/' );
@@ -12,7 +12,18 @@ function info( pageTitle, body, timestamp, image ) {
     title = 'Unnamed collection';
   }
 
+  m = body.match( /\{\{\#coordinates:([0-9\.\-]*)\|([0-9\.\-]*)}}/ );
+  if ( m ) {
+    coordinates = {
+      lat: parseFloat( m[1], 10 ),
+      lon: parseFloat( m[2], 10 )
+    };
+  } else {
+    coordinates = { lat: 0,
+      lon: 0 };
+  }
   return {
+    coordinates,
     updated: timestamp,
     id: parseInt( args[2], 10 ),
     title: title,

@@ -19,7 +19,7 @@ export default function ( lang, project, title, description, image, profile ) {
     var body = ['\'\'\'' + title + '\'\'\'', '', description, '', imageString,
       '== Items ==', '' ].join( '\n' );
 
-    return edit( lang, collectionTitle, body, 'Create collection', '0', project, profile ).then( function ( resp ) {
+    return edit( lang, collectionTitle, body, 'Create collection', '0', project, 0, 0, profile ).then( function ( resp ) {
       var collection;
       if ( resp.edit.result === 'Success' ) {
         // workaround lag

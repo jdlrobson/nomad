@@ -126,13 +126,16 @@ function initLoginRoutes( app ) {
     var lang = req.params.lang;
     var profile = req.user;
     var title = req.params.title;
+    var coords = req.body.coordinates;
+    var lat = coords ? coords.lat : 0;
+    var lon = coords ? coords.lon : 0;
 
     respond( res, function () {
       if ( action === 'create' ) {
         return collection.create( lang, DEFAULT_PROJECT, req.body.title, req.body.description, req.body.image, profile );
       } if ( action === 'edit' ) {
         return collection.edit( lang, DEFAULT_PROJECT, id, req.body.title,
-          req.body.description, req.body.image, profile );
+          req.body.description, req.body.image, lat, lon, profile );
       } else if ( action === 'with' ) {
         return collection.includes( lang, DEFAULT_PROJECT, title, COLLECTIONS_INCLUDE_WATCHLIST, profile );
       } else if ( action === 'has' ) {
