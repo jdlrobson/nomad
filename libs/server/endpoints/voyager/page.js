@@ -403,7 +403,7 @@ export default function ( title, lang, project, revision ) {
             // e.g. Kaliningrad will not show up for Russia
             // Cathedral of Notre Dame will show up for Luxembourg
             // Ideally we'd be able to verify the parent country
-            return addSights( data, isCountry ? 8000 : 120 );
+            return addSights( data, isCountry ? 8000 : 140 );
           } );
       } else {
         return data;
