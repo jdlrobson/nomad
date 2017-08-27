@@ -22,16 +22,19 @@ function info( pageTitle, body, timestamp, image ) {
     coordinates = { lat: 0,
       lon: 0 };
   }
+  const owner = args[0].split( ':' )[1];
+  const id = parseInt( args[2], 10 );
   return {
     coordinates,
     updated: timestamp,
-    id: parseInt( args[2], 10 ),
+    id: id,
     title: title,
+    url: '/en.wikivoyage/Special:Collections/by/' + owner + '/' + id,
     thumbnail: image ? {
       title: image,
       source: thumbFromTitle( image.split( ':' )[1], 200 )
     } : image,
-    owner: args[0].split( ':' )[1],
+    owner: owner,
     description: lines[2]
   }
 }
