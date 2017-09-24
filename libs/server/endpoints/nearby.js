@@ -18,7 +18,7 @@ export default function ( latitude, longitude, lang, ns, project, params ) {
     prop: 'coordinates|pageterms|pageimages|info|pageassessments',
     codistancefrompoint: latitude + '|' + longitude,
     generator: 'geosearch',
-    ggsradius: 20000,
+    ggsradius: 10000,
     ggsnamespace: ns || 0,
     ggslimit: 50,
     ggscoord: latitude + '|' + longitude
