@@ -315,6 +315,10 @@ export default function ( title, lang, project, revision ) {
             delete section.maps;
           }
 
+          if ( lcLine === 'get in' ) {
+            airports = airports.concat( extractAirports( section.text ) );
+          }
+
           section = climateExtraction( section );
           if ( section.climate ) {
             climate = section.climate;
