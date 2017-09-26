@@ -14,6 +14,7 @@ import flattenElements from './flatten-elements'
 import addSights from './add-sights'
 import thumbnailFromTitle from './../collection/thumbnail-from-title'
 import undoLinkFlatten from './undo-link-flatten'
+import extractAirports from './extract-airports'
 
 const ITEMS_TO_DELETE = [
   // should be handled upstream (https://gerrit.wikimedia.org/r/370371)
@@ -198,11 +199,13 @@ export default function ( title, lang, project, revision ) {
       var allDestinations = [];
       var allMaps = [];
       var curSectionLine;
+      var lcCurSectionLine;
       var curSectionSubheadingLine;
       var orientation = [];
       var itineraries = [];
       const transitLinks = [];
       const _seen = {};
+      let airports = [];
 
       const SIGHT_HEADINGS = [ 'See', 'See & Do', 'Do' ];
       const DESTINATION_BLACKLIST = [ 'Understand', 'Talk', 'See' ];
@@ -245,6 +248,7 @@ export default function ( title, lang, project, revision ) {
         }
         if ( section.toclevel === 1 ) {
           curSectionLine = section.line;
+          lcCurSectionLine = curSectionLine.toLowerCase();
           curSectionSubheadingLine  = undefined;
         }
         if ( section.toclevel === 2 ) {
@@ -257,6 +261,9 @@ export default function ( title, lang, project, revision ) {
         }
 
         var lcLine = section.line.toLowerCase();
+        if ( lcCurSectionLine === 'get in' ) {
+          airports = airports.concat( extractAirports( section.text ) );
+        }
         if ( SIGHT_HEADINGS.indexOf( curSectionLine ) > -1 ) {
           const doc = domino.createDocument( section.text );
           sights = sights.concat( extractSightsFromText( doc ) );
@@ -362,6 +369,7 @@ export default function ( title, lang, project, revision ) {
       data.lead.climate = climate;
       data.lead.isRegion = isRegion;
       data.lead.isCountry = isCountry;
+      data.lead.airports = airports;
       data.lead.transitLinks = transitLinks;
       data.itineraries = itineraries;
       if ( !isRegion ) {
