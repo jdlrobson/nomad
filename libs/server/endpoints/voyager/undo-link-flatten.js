@@ -11,8 +11,8 @@ export default function ( text ) {
       replacement.setAttribute( 'class', element.getAttribute( 'class' ) );
     }
     let title = encodeURIComponent( element.textContent );
-    replacement.setAttribute('href', './' + title );
-    replacement.setAttribute('title', element.textContent );
+    replacement.setAttribute( 'href', './' + title );
+    replacement.setAttribute( 'title', element.textContent );
     element.parentNode.replaceChild( replacement, element );
   }
   return doc.body.innerHTML;

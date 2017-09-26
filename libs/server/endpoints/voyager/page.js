@@ -275,7 +275,7 @@ export default function ( title, lang, project, revision ) {
               _seen[href] = true;
               transitLinks.push( {
                 href: href,
-                text: a.textContent
+                text: a.textContent || href.replace( 'www.', '' ).replace( /https?:\/\/([^\.]*).*/, '$1' )
               } );
             }
           } );
@@ -316,7 +316,7 @@ export default function ( title, lang, project, revision ) {
 
           if ( cardSectionTocLevel !== undefined && !isSubPage ) {
             if ( DESTINATION_BLACKLIST.indexOf( curSectionLine ) === -1 ) {
-              section.text = undoLinkFlatten(section.text);
+              section.text = undoLinkFlatten( section.text );
               section = extractDestinations( section, title );
 
               if ( section.destinations ) {
