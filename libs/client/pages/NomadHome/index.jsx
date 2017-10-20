@@ -40,6 +40,8 @@ export default createReactClass({
   launchOverlay( ev, item ) {
     var props = this.props;
     ev.preventDefault();
+    // Force retrieval of summary
+    delete item.description;
     if ( item.url ) {
       this.props.showOverlay( <PagePreviewOverlay
         api={this.props.api}

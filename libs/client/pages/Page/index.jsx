@@ -57,6 +57,7 @@ export default createReactClass({
     ev.preventDefault();
     this.props.showOverlay( <PagePreviewOverlay
       api={props.api}
+      item={item}
       language_project={props.language_project}
       onClickInternalLink={props.onClickInternalLink}
       getLocalUrl={props.getLocalUrl} item={item} /> );

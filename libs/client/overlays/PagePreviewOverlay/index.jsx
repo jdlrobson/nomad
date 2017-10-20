@@ -20,10 +20,14 @@ class PagePreviewOverlay extends Overlay {
     const item = props.item;
     const self = this;
 
-    props.api.fetch( `/api/en.wikivoyage.org/rest_v1/page/summary/${encodeURIComponent( item.title )}` )
-      .then( function ( json ) {
-        self.setState( { summary: json.extract || item.description } );
-      } );
+    if ( item.description ) {
+      self.setState( { summary: item.description } );
+    } else {
+      props.api.fetch( `/api/en.wikivoyage.org/rest_v1/page/summary/${encodeURIComponent( item.title )}` )
+        .then( function ( json ) {
+          self.setState( { summary: json.extract } );
+        } );
+    }
   }
   render(){
     var props = this.props;
