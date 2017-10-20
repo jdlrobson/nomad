@@ -40,6 +40,18 @@ function mergeAdjacentLists( list ) {
   }
 }
 
+function cleanupEmptyNodes( text ) {
+  var window = domino.createWindow( text ),
+    document = window.document;
+
+  Array.prototype.forEach.call( document.body.childNodes, function ( node ) {
+    if ( node && isNodeEmpty( node ) ) {
+      node.parentNode.removeChild( node );
+    }
+  } );
+  return document.body.innerHTML;
+}
+
 function cleanupScrubbedLists( text ) {
   var ext = extractElements( text, 'ul,dl', true );
   Array.prototype.forEach.call( ext.extracted, function ( listNode ) {
@@ -123,5 +135,5 @@ function extractText( html ) {
 }
 
 export { isNodeEmpty, extractElements, extractText, cleanupScrubbedLists,
-   extractElementsTextContent, cleanStrayPunctuation };
+  cleanupEmptyNodes, extractElementsTextContent, cleanStrayPunctuation };
 

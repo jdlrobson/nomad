@@ -6,7 +6,7 @@ import addProps from './../prop-enricher'
 
 import cleanVcards from './clean-vcards'
 import extractSightsFromText from './extract-sights-from-text'
-import { extractElements, isNodeEmpty, cleanupScrubbedLists, extractText } from './domino-utils'
+import { extractElements, isNodeEmpty, cleanupScrubbedLists, extractText, cleanupEmptyNodes } from './domino-utils'
 import extractDestinations from './extract-destinations'
 import extractImages from './extract-images'
 import climateExtraction from './extract-climate'
@@ -56,6 +56,7 @@ function flattenLinksInHtml( html ) {
 }
 
 function removeNodes( html, selector ) {
+  html = cleanupEmptyNodes( html );
   var ext = extractElements( html, selector );
   return cleanupScrubbedLists( ext.html );
 }
@@ -242,6 +243,7 @@ export default function ( title, lang, project, revision ) {
       delete newSection.images;
       delete newSection.maps;
 
+      data.lead.sections[0].text = cleanupEmptyNodes( data.lead.sections[0].text );
       data.remaining.sections.forEach( function ( section ) {
         section = extractWarnings( section );
         // reset Go next section
@@ -342,6 +344,7 @@ export default function ( title, lang, project, revision ) {
             }
           }
 
+          section.text = cleanupEmptyNodes( section.text );
           if ( EXPLORE_HEADINGS.indexOf( curSectionLine ) > -1 ) {
             // Don't list things here. You're not Tripadvisor/Foursquare/Yelp
             if ( ['Eat', 'Drink', 'Buy'].indexOf( curSectionLine ) > -1 ) {
@@ -482,7 +485,7 @@ export default function ( title, lang, project, revision ) {
         // to travel.
         json.lead.paragraph = flattenLinksInHtml( json.lead.paragraph );
         json.lead.sections = json.lead.sections.map( ( section ) => {
-          section.text = flattenLinksInHtml( section.text );
+          section.text = cleanupEmptyNodes( flattenLinksInHtml( section.text ) );
           return section;
         } );
       }
