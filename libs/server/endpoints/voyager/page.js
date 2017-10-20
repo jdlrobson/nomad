@@ -345,6 +345,12 @@ export default function ( title, lang, project, revision ) {
           }
 
           section.text = cleanupEmptyNodes( section.text );
+          if ( SIGHT_HEADINGS.concat( [ 'Sleep', 'Get in', 'Go next' ] ).indexOf( curSectionLine ) > -1 ) {
+            // Don't list things here.
+            // We will list them in a separate widget
+            section.text = removeNodes( section.text, 'ul,ol' );
+          }
+
           if ( EXPLORE_HEADINGS.indexOf( curSectionLine ) > -1 ) {
             // Don't list things here. You're not Tripadvisor/Foursquare/Yelp
             if ( ['Eat', 'Drink', 'Buy'].indexOf( curSectionLine ) > -1 ) {
