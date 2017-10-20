@@ -1,4 +1,4 @@
-#Weekipedia [![Build status](https://travis-ci.org/jdlrobson/weekipedia.svg?branch=master&r=1)](https://travis-ci.org/jdlrobson/weekipedia)
+# Weekipedia [![Build status](https://travis-ci.org/jdlrobson/weekipedia.svg?branch=master&r=1)](https://travis-ci.org/jdlrobson/weekipedia)
 
 Weekipedia is the Wikipedia mobile site reimagined in React.js. It is a 10% project and not officially supported by the Wikimedia Foundation.
 
@@ -107,12 +107,14 @@ Enable talk button for anonymous users
 	export SHOW_TALK_ANONS=1
 
 ### Push notifications
-Setup push notifications
+Setup push notifications. You'll need a Google Cloud Messaging API key from https://console.developers.google.com/.
 
 	export GCM_SENDER_ID=
 	export GCM_API_KEY=
 	export TREND_ENABLED=1
 	export TREND_EDITS_PER_MIN=0
+	export TREND_MIN_ANON_EDITS=0
+	export TREND_MAX_ANON_EDIT_RATIO=1 (1 anon edit / 2 named edit = 0.5 ratio)
 	export TREND_BIAS=1
 	export TREND_MIN_AGE=5
 	export TREND_MAX_AGE=100000
