@@ -114,7 +114,7 @@ export default createReactClass({
       description = '', artist = '',
       img = this.state.img;
     if ( img ) {
-      url = '/' + props.language_project + '/File:' + props.image;
+      url = 'https://wikivoyage.org/wiki/File:' + props.image;
       isLandscape = img.thumbwidth > img.thumbheight;
       var imgStyle = {
         maxHeight: this.state.height,
