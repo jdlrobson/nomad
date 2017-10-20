@@ -89,12 +89,13 @@ export default function ( title, lang, project, revision ) {
       if ( page && page.pageprops ) {
         title = page.pageprops.wpb_banner;
         const lcBannerTitle = title && title.toLowerCase();
-        width = 300;
+        width = 800;
         if ( title && lcBannerTitle.indexOf( ' default banner' ) === -1 &&
           lcBannerTitle.indexOf( 'pagebanner default.jpg' ) === -1
         ) {
           data.lead.images = [{
             caption: '',
+            isBanner: true,
             href: './File:' + title,
             width: width,
             height: width / 7,
