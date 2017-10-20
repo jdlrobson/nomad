@@ -1,6 +1,6 @@
 import React from 'react';
 import { divIcon, icon } from 'leaflet';
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
+import { Map, Marker, Popup, TileLayer, Polyline } from 'react-leaflet';
 import { IntermediateState, Card } from 'wikipedia-react-components'
 import createReactClass from 'create-react-class'
 
@@ -8,6 +8,31 @@ import calculateBoundsFromPages from './../../calculate-bounds-from-pages'
 
 import './styles.less'
 import 'leaflet/dist/leaflet.css'
+
+function calculateDistance( from, to ) {
+	var distance, a,
+		toRadians = Math.PI / 180,
+		deltaLat, deltaLng,
+		startLat, endLat,
+		haversinLat, haversinLng,
+		radius = 6378.1; // radius of Earth in km
+
+	if( from[0] === to[0] && from[1] === to[1] ) {
+		distance = 0;
+	} else {
+		deltaLat = ( to[1] - from[1] ) * toRadians;
+		deltaLng = ( to[0] - from[0] ) * toRadians;
+		startLat = from[0] * toRadians;
+		endLat = to[0] * toRadians;
+
+		haversinLat = Math.sin( deltaLat / 2 ) * Math.sin( deltaLat / 2 );
+		haversinLng = Math.sin( deltaLng / 2 ) * Math.sin( deltaLng / 2 );
+
+		a = haversinLat + Math.cos( startLat ) * Math.cos( endLat ) * haversinLng;
+		return 2 * radius * Math.asin( Math.sqrt( a ) );
+	}
+	return distance;
+}
 
 function param( args ) {
   var key,
@@ -44,6 +69,7 @@ export default createReactClass({
       var c = page.coordinates;
       if ( c && !titles[page.title] ) {
         marker = {
+          page: page,
           lat: c.lat,
           lng: c.lng || c.lon,
           label: <Card title={page.title} extracts={[ page.description ]}
@@ -151,6 +177,26 @@ export default createReactClass({
         mapOptions.bounds = [ bounds.southWest, bounds.northEast ];
       }
 
+      var polyLines = [];
+
+      var last;
+      var lastPage;
+      markers.forEach( function ( marker, i ) {
+        var cur = [ marker.lat, marker.lon || marker.lng  ];
+        if ( last ) {
+          polyLines.push(
+            <Polyline positions={[ last, cur ]} color='#00ab9f' weight={(i * 0.2)+1}>
+              <Popup>
+                  <Card title={`${lastPage.title} to ${marker.page.title}`}
+                    extracts={[ Math.floor( calculateDistance(last, cur) ) + 'km' ]} url={'#'} />
+              </Popup>
+            </Polyline>
+          );
+        }
+        lastPage = marker.page;
+        last = cur;
+      } );
+
       return (
         <Map {...mapOptions}>
           <TileLayer
@@ -176,6 +222,7 @@ export default createReactClass({
               )
             } )
           }
+          {polyLines}
         </Map>
       )
     } else {
