@@ -31,7 +31,7 @@ function initRoutes( app ) {
         }
       } ).catch( ( err ) => {
         res.status( 404 );
-        res.send( err );
+        res.send( err && err.toString ? err.toString() : err );
       } );
     } );
   } );
