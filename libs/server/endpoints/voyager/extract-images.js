@@ -1,5 +1,9 @@
 import { extractElements } from './domino-utils'
 
+function extractTitle( src ) {
+  return src.split( 'px-' )[1];
+}
+
 function extractImages( section ) {
   var ext = extractElements( section.text, 'figure, .gallerybox' );
   var maps = [];
@@ -8,11 +12,12 @@ function extractImages( section ) {
     var img = node.querySelector( 'img' );
     var caption = node.querySelector( 'figcaption' );
     var link = node.querySelector( 'a.image' );
+    var src = img.getAttribute( 'src' );
 
     var imgData = {
-      href: link ? link.getAttribute( 'href' ) : '',
+      href: link ? link.getAttribute( 'href' ) : extractTitle( src ),
       caption: caption ? caption.textContent : '',
-      src: img.getAttribute( 'src' ),
+      src: src,
       srcset: img.getAttribute( 'srcset' ),
       height: img.getAttribute( 'height' ),
       width: img.getAttribute( 'width' )
