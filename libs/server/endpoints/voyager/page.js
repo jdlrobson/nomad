@@ -28,6 +28,8 @@ const ITEMS_TO_DELETE = [
   '.noprint',
   '.ambox',
   '.mbox-image',
+  // Hatnotes - haven't worked a better way to deal with them yet.
+  'dl',
   '.mbox-text',
   '.scribunto-error',
   '.mw-kartographer-container'
