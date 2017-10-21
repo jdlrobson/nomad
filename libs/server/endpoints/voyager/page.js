@@ -210,6 +210,8 @@ export default function ( title, lang, project, revision ) {
       var itineraries = [];
       const transitLinks = [];
       const _seen = {};
+      let climateSection;
+      let understandSection;
       let airports = [];
 
       const SIGHT_HEADINGS = [ 'See', 'See & Do', 'Do' ];
@@ -326,6 +328,12 @@ export default function ( title, lang, project, revision ) {
           }
 
           section = climateExtraction( section );
+          if ( lcLine === 'climate' ) {
+            climateSection = section.id;
+          }
+          if ( lcLine === 'understand' ) {
+            understandSection = section.id;
+          }
           if ( section.climate ) {
             climate = section.climate;
             delete section.climate;
@@ -383,10 +391,12 @@ export default function ( title, lang, project, revision ) {
       data.remaining.sections = sections;
       data.lead.images = data.lead.images.concat( allImages );
       data.lead.maps = allMaps;
+
       data.lead.climate = climate;
       data.lead.isRegion = isRegion;
       data.lead.isCountry = isCountry;
       data.lead.airports = airports;
+      data.lead.climateSection = climateSection || understandSection;
       data.lead.transitLinks = transitLinks;
       data.itineraries = itineraries;
       if ( !isRegion ) {

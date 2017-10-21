@@ -11,6 +11,7 @@ import ImageBubbles from './../../components/ImageBubbles'
 import Climate from './../../components/Climate'
 import CardList from './../../components/CardList'
 import Infobox from './../../components/Infobox'
+import EditorLink from './../../components/EditorLink'
 
 import GoNext from './../../components/GoNext'
 
@@ -28,6 +29,61 @@ import './tablet.less'
 
 const OFFLINE_ERROR_MESSAGE = 'You need an internet connection to view this page';
 const NOT_FOUND_MESSAGE = 'This page does not exist.';
+
+function generateClimateData() {
+  return `{{Climate
+    | units = Metric
+    | janhigh =    2
+    | febhigh =    5
+    | marhigh =   12
+    | aprhigh =   20
+    | mayhigh =   26
+    | junhigh =   30
+    | julhigh =   31
+    | aughigh =   30
+    | sephigh =   26
+    | octhigh =   19
+    | novhigh =   10
+    | dechigh =    4
+    | janlow =   −8
+    | feblow =   −6
+    | marlow =    0
+    | aprlow =    8
+    | maylow =   14
+    | junlow =   19
+    | jullow =   22
+    | auglow =   21
+    | seplow =   15
+    | octlow =    8
+    | novlow =    0
+    | declow =   −6
+    | janprecip =  3
+    | febprecip =  5
+    | marprecip =  8
+    | aprprecip =  21
+    | mayprecip =  34
+    | junprecip =  78
+    | julprecip =  185
+    | augprecip =  160
+    | sepprecip =  46
+    | octprecip =  22
+    | novprecip =  7
+    | decprecip =  3
+    | jansun = 6.5
+    | febsun = 6.8
+    | marsun = 7.8
+    | aprsun = 8.2
+    | maysun = 9.3
+    | junsun = 9.1
+    | julsun = 7.2
+    | augsun = 7.4
+    | sepsun = 8.1
+    | octsun = 7.3
+    | novsun = 6.4
+    | decsun = 6.0
+    | description = Humidity is low except during the summer
+    }}`;
+}
 
 // Pages
 export default createReactClass({
@@ -369,6 +425,10 @@ export default createReactClass({
       }
       if ( lead.climate ) {
         col3.push( <Climate key="page-climate" climate={lead.climate} /> );
+      } else if ( lead.climateSection && session ) {
+        col3.push( <EditorLink key={"editor-link-" + lead.climateSection}
+          session={session}
+          wikitext={generateClimateData()} section={lead.climateSection} label="Add climate data "/> );
       }
     }
 
