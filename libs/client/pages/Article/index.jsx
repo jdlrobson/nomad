@@ -42,7 +42,7 @@ class Article extends Component {
       return <WatchIcon {...contentProps} key="article-watch"
         title={lead.displaytitle} />;
     } else {
-      return <Icon />;
+      return <Icon key="article-watch" />;
     }
   }
   getTabs() {

@@ -47,11 +47,6 @@ function getCards( data, props, keyPrefix ) {
       }
 
       var session = props.session;
-      if ( session && props.collection && data.owner === session.username  && !props.unordered ) {
-        item.indicator = <WatchIcon {...props}
-          key={item.key + '-watch'}
-          title={item.title} collection={props.collection} isWatched={true} />
-      }
       if ( item.missing ) {
         item.thumbnail = {
           source: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Sin_mapa.svg/320px-Sin_mapa.svg.png'

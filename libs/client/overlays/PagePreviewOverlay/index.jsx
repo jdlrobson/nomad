@@ -38,7 +38,8 @@ class PagePreviewOverlay extends Overlay {
       img = <img src={thumb.source} height={thumb.height} width={thumb.width} alt={item.title}
         key="p-p-img" />;
     }
-    const desc = this.state ? <div className="description">{this.state.summary}</div> : <IntermediateState key="page-preview-loader" />;
+    const desc = this.state ? <div key="page-preview-loader"
+      className="description">{this.state.summary}</div> : <IntermediateState key="page-preview-loader" />;
     var url = props.getLocalUrl(item.title, '', item.source);
     var hello = [
       <h2 key="p-p-h">{item.title}</h2>,
