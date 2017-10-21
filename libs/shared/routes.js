@@ -77,6 +77,7 @@ var routes = [
         props.children = [
           React.createElement( View,
             Object.assign( {}, props, {
+              isSpecialPage: false,
               key: 'page-' + title + '-' + props.revision,
               titleSansPrefix: titleSansPrefix,
               title: titleDecoded
