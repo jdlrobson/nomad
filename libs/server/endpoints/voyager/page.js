@@ -274,7 +274,7 @@ export default function ( title, lang, project, revision ) {
           section.text = doc.body.innerHTML;
           if ( SIGHT_HEADINGS.indexOf( section.line ) === -1 ) {
             // Maybe the heading itself is a place. e.g. Dali
-            sights.push( section.line );
+            sights.push( { name: section.line } );
           }
         }
 

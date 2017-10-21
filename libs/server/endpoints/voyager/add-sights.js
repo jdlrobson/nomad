@@ -6,7 +6,8 @@ const aliases = {};
 function addAliases( sights ) {
   const numPossibleSights = sights.length;
 
-  sights.forEach( ( sight, i ) => {
+  sights.forEach( ( sightObj, i ) => {
+    const sight = sightObj.name;
     const words = sight.split( ' ' );
     const segments = sight.split( / - / );
     const theLessSight = sight.replace( /[Tt]he /, '' );
@@ -30,7 +31,9 @@ function addAliases( sights ) {
     }
   } );
 
-  return sights.concat( Object.keys( aliases ) );
+  return sights.map( ( sight ) => {
+    return sight.name;
+  } ).concat( Object.keys( aliases ) );
 }
 /**
  * @param {Object} data
@@ -40,6 +43,10 @@ function addSights( data, distance ) {
   var props = [ 'pageimages', 'pageterms', 'pageprops', 'coordinates' ];
   var landmark = data.lead.coordinates;
   if ( data.lead.sights && landmark ) {
+    const lookup = {};
+    data.lead.sights.forEach( ( sight ) => {
+      lookup[sight.name] = sight;
+    } );
     var sights = addAliases( data.lead.sights );
     // dedupe
     const matches = {};
@@ -82,7 +89,13 @@ function addSights( data, distance ) {
               // possibily too generous.. but check how many km away the sight is
               distFromLandmark < distance;
           }
-        );
+        ).map( ( page ) => {
+          const item = lookup[page.title];
+          if ( item && item.description ) {
+            page.description = item.description;
+          }
+          return page;
+        } )
         // filter all the sights which we found something for
         data.warnings = Object.keys( sightWarnings ).filter( ( key ) => {
           return sightWarnings[key];

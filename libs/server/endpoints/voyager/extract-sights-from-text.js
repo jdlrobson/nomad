@@ -9,19 +9,29 @@ export default function ( doc ) {
   const sisterSiteLink = doc.querySelectorAll( '.listing-sister a' );
   if ( sisterSiteLink.length ) {
     sisterSiteLink.forEach( ( sister ) => {
-      sights.push( sister.getAttribute( 'href' ).replace( './W:', '' ).replace( /_/g, ' ' ) );
       const listItem = getParentWithTag( sister, 'LI' );
+      const summaryItems = listItem ? listItem.querySelectorAll( '.vcard .listing-content' ) : []
+
+      sights.push( {
+        description: summaryItems.length ? summaryItems[0].textContent : '',
+        name: sister.getAttribute( 'href' ).replace( './W:', '' ).replace( /_/g, ' ' )
+      } );
       if ( listItem && listItem.parentNode ) {
         listItem.parentNode.removeChild( listItem );
       }
     } );
   }
 
+  const nameToObj = ( name ) => {
+    return {
+      name
+    };
+  };
   text = doc.body.innerHTML;
   sights = sights.concat(
-    extractBoldItems( text )
+    extractBoldItems( text ).map( nameToObj )
   ).concat(
-    extractElementsTextContent( extractElements( text, 'a', true ).extracted )
+    extractElementsTextContent( extractElements( text, 'a', true ).extracted ).map( nameToObj )
   );
   return sights;
 }
