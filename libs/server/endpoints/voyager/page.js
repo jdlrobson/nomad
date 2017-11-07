@@ -347,9 +347,10 @@ export default function ( title, lang, project, revision ) {
           }
 
           section.text = cleanupEmptyNodes( section.text );
-          if ( SIGHT_HEADINGS.concat( [ 'Sleep', 'Get in', 'Go next' ] ).indexOf( curSectionLine ) > -1 ) {
+          if ( [ 'Sleep', 'Get in', 'Go next' ].indexOf( curSectionLine ) > -1 ) {
             // Don't list things here.
             // We will list them in a separate widget
+            // Keep it for do & see as we need a fallback for where we fail to parse.
             section.text = removeNodes( section.text, 'ul,ol' );
           }
 
