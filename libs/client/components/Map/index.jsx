@@ -55,6 +55,7 @@ export default createReactClass({
   },
   getInitialState() {
     return {
+      markers: [],
       titles: {}
     };
   },
@@ -138,7 +139,7 @@ export default createReactClass({
         { title: props.title, coordinates: { lat: lat, lng: lng } }
       ] )
       this.props.api.getPage( this.props.title, this.props.language_project )
-        .then( ( page ) => this.loadMarkers( page.vcards ) );
+        .then( ( page ) => this.loadMarkers( page.vcards || [] ) );
     }
     if ( this.props.apiEndpoint ) {
       loadMarkersInCollection( this.props.apiEndpoint );
@@ -159,7 +160,8 @@ export default createReactClass({
   },
   render: function () {
     var position, mapOptions;
-    var markers = this.state.markers;
+    var state = this.state || {};
+    var markers = state.markers || [];
     var lat = this.state.lat;
     var lng = this.state.lon;
     var bounds = this.state.bounds;
