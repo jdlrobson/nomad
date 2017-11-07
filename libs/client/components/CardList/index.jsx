@@ -156,20 +156,23 @@ export default createReactClass({
   },
   onScroll() {
     var self = this;
-    if ( document.body.scrollHeight >= ( document.body.scrollTop + window.innerHeight ) / 2 ) {
+    if ( this.scrollableElement.scrollHeight >= ( this.scrollableElement.scrollTop + window.innerHeight ) / 2 ) {
       self.loadMore();
     }
   },
   componentWillUnmount() {
-    document.removeEventListener( 'scroll', this.onScroll );
+    this.scrollableElement.removeEventListener( 'scroll', this.onScroll );
   },
   componentDidMount() {
     var props = this.props;
 
     this.loadCards( props );
+
+    // Forgive me for i have introduced technical debt..
+    this.scrollableElement = document.getElementById('mw-mf-page-center');
     // setup infinite scroll
     if ( props.infiniteScroll && !props.limit ) {
-      document.addEventListener( 'scroll', this.onScroll );
+      this.scrollableElement.addEventListener( 'scroll', this.onScroll );
     }
   },
   render: function () {
