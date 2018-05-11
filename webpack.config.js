@@ -1,6 +1,6 @@
+/* global process, __dirname */
 const offlineVersion = process.env.OFFLINE_VERSION;
 const WORDMARK = process.env.SITE_WORDMARK_PATH;
-const NODE_ENV = process.env.NODE_ENV;
 const USE_POLYFILLS = Boolean( process.env.USE_POLYFILLS );
 const OFFLINE_STRATEGY = process.env.OFFLINE_STRATEGY || 'none';
 const API_PATH = process.env.API_PATH || '/api/';
@@ -14,8 +14,7 @@ var mainEntryPoint = USE_POLYFILLS ? './libs/client/app-shimmed.js' : './libs/cl
 module.exports = {
 	entry: {
 		main: mainEntryPoint,
-		sw: './libs/workers/service-worker.js',
-		push: './libs/workers/web-push.js'
+		sw: './libs/workers/service-worker.js'
 	},
 	output: {
 		path: __dirname + '/public/',

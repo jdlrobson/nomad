@@ -5,7 +5,6 @@ import watchlist from './endpoints/watchlist';
 import watched from './endpoints/watched';
 import watch from './endpoints/watch';
 import visits from './endpoints/visits';
-import subscribe from './endpoints/subscribe';
 import search from './endpoints/search';
 import references from './endpoints/references';
 import random from './endpoints/random';
@@ -173,37 +172,6 @@ function initLoginRoutes( app ) {
 			res.status( 200 );
 			res.send( JSON.stringify( data ) );
 		} );
-	} );
-}
-
-function initPostMethods( app ) {
-  /*
-   *******************************************************
-   * Begin POST routes
-   *******************************************************
-  */
-	app.post( '/api/web-push/test', function ( req, res ) {
-		if ( checkReqParams( req, res, [ 'feature', 'token', 'browser' ] ) ) {
-			res.status( 200 );
-			subscribe.ping( req.body.browser, req.body.feature, req.body.token );
-			res.send( RESPONSE_OKAY );
-		}
-	} );
-
-	app.post( '/api/web-push/subscribe', function ( req, res ) {
-		if ( checkReqParams( req, res, [ 'feature', 'token', 'browser' ] ) ) {
-			res.status( 200 );
-			subscribe.add( req.body.browser, req.body.feature, req.body.token );
-			res.send( RESPONSE_OKAY );
-		}
-	} );
-
-	app.post( '/api/web-push/unsubscribe', function ( req, res ) {
-		if ( checkReqParams( req, res, [ 'feature', 'token', 'browser' ] ) ) {
-			res.status( 200 );
-			subscribe.remove( req.body.browser, req.body.feature, req.body.token );
-			res.send( RESPONSE_OKAY );
-		}
 	} );
 }
 
@@ -383,7 +351,6 @@ function initRoutes( app, canLogin ) {
 	if ( canLogin ) {
 		initLoginRoutes( app );
 	}
-	initPostMethods( app );
 	initGetMethods( app );
 	initApiProxy( app, '/api/' );
 }
