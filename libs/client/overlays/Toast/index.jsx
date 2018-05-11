@@ -1,18 +1,18 @@
-import React from 'react'
-import createReactClass from 'create-react-class'
+import React from 'react';
+import createReactClass from 'create-react-class';
 
-import Overlay from './../Overlay'
+import Overlay from './../Overlay';
 
-import './styles.less'
+import './styles.less';
 
-export default createReactClass({
-  render(){
-    return (
+export default createReactClass( {
+	render() {
+		return (
       <Overlay router={this.props.router} isDrawer="1" className="mw-notification">
         <div className="content">
           {this.props.children}
         </div>
       </Overlay>
-    )
-  }
+		);
+	}
 } );

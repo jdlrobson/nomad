@@ -1,8 +1,8 @@
-import addProps from './../prop-enricher'
+import addProps from './../prop-enricher';
 
 export default function ( lang, project ) {
-  return addProps(
-    [
+	return addProps(
+		[
       { title: 'Antarctica' },
       { title: 'Asia' },
       { title: 'Africa' },
@@ -13,10 +13,10 @@ export default function ( lang, project ) {
       { title: 'North America' },
       { title: 'South America' },
       { title: 'Oceania' }
-    ], [ 'pageimages', 'pageterms' ], lang, project
+		], [ 'pageimages', 'pageterms' ], lang, project
   ).then( function ( pages ) {
-    return {
-      pages: pages
-    };
-  } );
+	return {
+		pages: pages
+	};
+} );
 }

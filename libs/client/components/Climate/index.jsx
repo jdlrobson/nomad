@@ -1,41 +1,41 @@
-import React from 'react'
-import createReactClass from 'create-react-class'
+import React from 'react';
+import createReactClass from 'create-react-class';
 
-import './styles.less'
+import './styles.less';
 
-export default createReactClass({
-  onChange( ev ) {
-    this.setState( { month: ev.currentTarget.value })
-  },
-  getInitialState() {
-    return {
-      month: null
-    }
-  },
-  onClick( ev ) {
-    ev.preventDefault();
-    this.props.router.navigateTo( '#/media/' +
+export default createReactClass( {
+	onChange( ev ) {
+		this.setState( { month: ev.currentTarget.value } );
+	},
+	getInitialState() {
+		return {
+			month: null
+		};
+	},
+	onClick( ev ) {
+		ev.preventDefault();
+		this.props.router.navigateTo( '#/media/' +
       ev.currentTarget.getAttribute( 'href' ).replace( '/wiki/File:', '' ) );
-  },
-  componentWillMount() {
-    var month = new Date().getMonth();
-    this.setState( { month: month } );
-  },
-  render() {
-    var options,
-      climate = this.props.climate,
-      curMonthNum = this.state.month,
-      curMonth = climate[curMonthNum],
-      degSuffix = curMonth.imperial ? '°F' : '°C',
-      precSuffix = curMonth.imperial ? 'inches' : 'mm';
+	},
+	componentWillMount() {
+		var month = new Date().getMonth();
+		this.setState( { month: month } );
+	},
+	render() {
+		var options,
+			climate = this.props.climate,
+			curMonthNum = this.state.month,
+			curMonth = climate[ curMonthNum ],
+			degSuffix = curMonth.imperial ? '°F' : '°C',
+			precSuffix = curMonth.imperial ? 'inches' : 'mm';
 
-   options = climate.map( function ( data, i ) {
-     return (
-       <option value={i} key={"climate-option-" + i}>{data.heading}</option>
-     );
-   } );
+		options = climate.map( function ( data, i ) {
+			return (
+       <option value={i} key={'climate-option-' + i}>{data.heading}</option>
+			);
+		} );
 
-    return (
+		return (
       <div className="component-climate">
         <h2>Weather averages</h2>
         <div>
@@ -47,6 +47,6 @@ export default createReactClass({
         </div>
         <div>Precipitation: { curMonth.precipitation} {precSuffix}</div>
       </div>
-    );
-  }
+		);
+	}
 } );

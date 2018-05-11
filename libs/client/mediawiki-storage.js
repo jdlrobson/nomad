@@ -8,7 +8,7 @@
  */
 var mwStorage = {
 
-  localStorage: typeof window !== 'undefined' ? window.localStorage : null,
+	localStorage: typeof window !== 'undefined' ? window.localStorage : null,
 
   /**
    * Retrieve value from device storage.
@@ -16,12 +16,12 @@ var mwStorage = {
    * @param {string} key Key of item to retrieve
    * @return {string|boolean} False when localStorage not available, otherwise string
    */
-  get: function ( key ) {
-    try {
-      return mwStorage.localStorage.getItem( key );
-    } catch ( e ) {}
-    return false;
-  },
+	get: function ( key ) {
+		try {
+			return mwStorage.localStorage.getItem( key );
+		} catch ( e ) {}
+		return false;
+	},
 
   /**
     * Set a value in device storage.
@@ -30,13 +30,13 @@ var mwStorage = {
     * @param {string} value Value to be stored
     * @return {boolean} Whether the save succeeded or not
     */
-  set: function ( key, value ) {
-    try {
-      mwStorage.localStorage.setItem( key, value );
-      return true;
-    } catch ( e ) {}
-    return false;
-  },
+	set: function ( key, value ) {
+		try {
+			mwStorage.localStorage.setItem( key, value );
+			return true;
+		} catch ( e ) {}
+		return false;
+	},
 
   /**
     * Remove a value from device storage.
@@ -44,13 +44,13 @@ var mwStorage = {
     * @param {string} key Key of item to remove
     * @return {boolean} Whether the save succeeded or not
     */
-  remove: function ( key ) {
-    try {
-      mwStorage.localStorage.removeItem( key );
-      return true;
-    } catch ( e ) {}
-    return false;
-  }
+	remove: function ( key ) {
+		try {
+			mwStorage.localStorage.removeItem( key );
+			return true;
+		} catch ( e ) {}
+		return false;
+	}
 };
 
 module.exports = mwStorage;

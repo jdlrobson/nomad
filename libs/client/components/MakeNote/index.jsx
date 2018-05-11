@@ -1,30 +1,29 @@
-import React from 'react'
-import { Icon } from 'wikipedia-react-components'
-import createReactClass from 'create-react-class'
+import React from 'react';
+import { Icon } from 'wikipedia-react-components';
+import createReactClass from 'create-react-class';
 
-import CtaIcon from './../CtaIcon'
+import CtaIcon from './../CtaIcon';
 
-export default createReactClass({
-  render(){
-    var props = this.props;
-    var username = props.session ? props.session.username : null;
-    var isOnline = typeof( navigator ) !== 'undefined' && navigator && navigator.onLine !== undefined && navigator.onLine;
-    var iconProps = Object.assign({}, props, {
-      key: 'page-action-note',
-      glyph: 'note',
-      className: 'make-note-component'
-    });
+export default createReactClass( {
+	render() {
+		var props = this.props;
+		var username = props.session ? props.session.username : null;
+		var isOnline = typeof ( navigator ) !== 'undefined' && navigator && navigator.onLine !== undefined && navigator.onLine;
+		var iconProps = Object.assign( {}, props, {
+			key: 'page-action-note',
+			glyph: 'note',
+			className: 'make-note-component'
+		} );
 
-    var icon = (
+		var icon = (
       <CtaIcon {...iconProps}
         ctaMsg="Write down some public notes about this place to help you and others plan your trip."
-        onLoginUrl={"#/note-editor/" + username }/>
+        onLoginUrl={'#/note-editor/' + username }/>
     );
-    if ( !isOnline && !username ) {
-      icon = <Icon {...iconProps}
-        href={"#/note-editor/~"}/>
-    }
-    return icon;
-  }
-});
-
+		if ( !isOnline && !username ) {
+			icon = <Icon {...iconProps}
+        href={'#/note-editor/~'}/>;
+		}
+		return icon;
+	}
+} );

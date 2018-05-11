@@ -1,68 +1,68 @@
-import React from 'react'
-import { Icon } from 'wikipedia-react-components'
-import createReactClass from 'create-react-class'
+import React from 'react';
+import { Icon } from 'wikipedia-react-components';
+import createReactClass from 'create-react-class';
 
-import './styles.less'
+import './styles.less';
 
-export default createReactClass({
-  getInitialState() {
-    return {
-      numImages: 0,
-      loop: false,
-      activeImage: 0
-    }
-  },
-  onClick( ev ) {
-    ev.preventDefault();
-    this.props.router.navigateTo( '#/media/' +
+export default createReactClass( {
+	getInitialState() {
+		return {
+			numImages: 0,
+			loop: false,
+			activeImage: 0
+		};
+	},
+	onClick( ev ) {
+		ev.preventDefault();
+		this.props.router.navigateTo( '#/media/' +
       ev.currentTarget.getAttribute( 'href' ).replace( './File:', '' ) );
-  },
-  _normalize( active ) {
-    if ( active < 0 ) {
-      active = this.state.numImages - 1;
-    } else if ( active > this.state.numImages - 1 ) {
-      active = 0;
-    }
-    this.setState( { activeImage: active } );
-  },
-  next() {
-    this._normalize( this.state.activeImage + 1 );
-  },
-  prev() {
-    this._normalize( this.state.activeImage - 1 );
-  },
-  componentWillMount() {
-    this.setState( { numImages: this.props.images.length } );
-  },
-  render() {
-    var props = this.props;
-    var self = this;
-    var active = this.state.activeImage;
-    var hasMultipleImages = props.images.length > 1;
-    var prev = hasMultipleImages ?
+	},
+	_normalize( active ) {
+		if ( active < 0 ) {
+			active = this.state.numImages - 1;
+		} else if ( active > this.state.numImages - 1 ) {
+			active = 0;
+		}
+		this.setState( { activeImage: active } );
+	},
+	next() {
+		this._normalize( this.state.activeImage + 1 );
+	},
+	prev() {
+		this._normalize( this.state.activeImage - 1 );
+	},
+	componentWillMount() {
+		this.setState( { numImages: this.props.images.length } );
+	},
+	render() {
+		var props = this.props;
+		var self = this;
+		var active = this.state.activeImage;
+		var hasMultipleImages = props.images.length > 1;
+		var prev = hasMultipleImages ?
       <Icon glyph="arrow-invert" className="arrow-left" onClick={this.prev} /> : null;
-    var next = hasMultipleImages  ?
+		var next = hasMultipleImages ?
       <Icon glyph="arrow-invert" className="arrow-right" onClick={this.next} /> : null;
 
-    return (
+		return (
       <div className="component-image-slideshow">
         {prev}
         <ul> {
-           props.images.map( function( img, i ){
-             var src = img.src;
-             var className = i === active ? 'active' : '';
-             return (
-               <li className={className} key={"image-slide-" + i}>
-                 <a href={img.href} onClick={self.onClick} style={{backgroundImage: `url("${src}")`}}>
+           props.images.map( function ( img, i ) {
+	var src = img.src;
+	var className = i === active ? 'active' : '';
+	return (
+               <li className={className} key={'image-slide-' + i}>
+                 <a href={img.href} onClick={self.onClick} style={{ backgroundImage: `url("${src}")` }}>
                    <img src={src} alt={img.caption} />
                   </a>
                 </li>
-             );
-           } )
+	);
+} )
          }
         </ul>
         {next}
       </div>
-    );
-  }
+		);
+	}
 } );

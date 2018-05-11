@@ -1,11 +1,11 @@
-import React from 'react'
+import React from 'react';
 
-import Content from './../Content'
+import Content from './../Content';
 
-import './styles.less'
+import './styles.less';
 
-const ThreeColumnLayout = function (props) {
-  return (
+const ThreeColumnLayout = function ( props ) {
+	return (
     <Content>
       <div className="flex-box">
         <div className="column-one">
@@ -19,7 +19,7 @@ const ThreeColumnLayout = function (props) {
         </div>
       </div>
     </Content>
-  )
-}
+	);
+};
 
 export default ThreeColumnLayout;

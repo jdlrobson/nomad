@@ -1,60 +1,60 @@
-import React from 'react'
-import messages, { msg } from 'mediawiki-messages'
+import React from 'react';
+import messages, { msg } from 'mediawiki-messages';
 
-import App from './../client/components/App'
+import App from './../client/components/App';
 
-import router from './router.js'
-import sharedRoutes from './routes.js'
+import router from './router.js';
+import sharedRoutes from './routes.js';
 
 var globalProps;
 
 function init( config, routes ) {
-  routes = routes || [];
+	routes = routes || [];
 
   // merge common and global routes
-  routes = sharedRoutes.concat( routes );
+	routes = sharedRoutes.concat( routes );
 
   // add home page route to end so it gets added last.
-  routes.push(
-    [
+	routes.push(
+		[
       // Home page / Hot
-      /^\/?$/,
-      function ( info, props, query ) {
-        return router.matchRoute( props.siteinfo.home, '#', props, query )
-      }
-    ]
+			/^\/?$/,
+			function ( info, props, query ) {
+				return router.matchRoute( props.siteinfo.home, '#', props, query );
+			}
+		]
   );
 
   // load messages
-  messages.load( config.i18n || {} );
+	messages.load( config.i18n || {} );
 
   // register all the routes
-  routes.forEach( function ( args ) {
-    router.addRoute.apply( router, args );
-  } );
+	routes.forEach( function ( args ) {
+		router.addRoute.apply( router, args );
+	} );
 
   // register global config
-  globalProps = Object.assign( {}, config, {
-    msg: msg,
-    router: router,
-    messages: messages
-  } );
+	globalProps = Object.assign( {}, config, {
+		msg: msg,
+		router: router,
+		messages: messages
+	} );
 }
 
 function render( path, hash, props, query ) {
-  props = props || {};
-  hash = hash || '#';
+	props = props || {};
+	hash = hash || '#';
 
-  var newProps = Object.assign( {}, globalProps, props );
-  delete newProps.children;
-  newProps.key = path + '_' + hash;
-  return React.createElement( App,
+	var newProps = Object.assign( {}, globalProps, props );
+	delete newProps.children;
+	newProps.key = path + '_' + hash;
+	return React.createElement( App,
     router.matchRoute( path, hash, newProps, query )
-  )
+  );
 }
 
 export default {
-  router: router,
-  init: init,
-  render: render
+	router: router,
+	init: init,
+	render: render
 };

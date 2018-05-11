@@ -1,24 +1,24 @@
-import React from 'react'
-import createReactClass from 'create-react-class'
-import { Button } from 'wikipedia-react-components'
+import React from 'react';
+import createReactClass from 'create-react-class';
+import { Button } from 'wikipedia-react-components';
 
-import Content from './../../components/Content'
-import Article from './../Article'
+import Content from './../../components/Content';
+import Article from './../Article';
 
-import './styles.less'
+import './styles.less';
 
 // Pages
-export default createReactClass({
-  render() {
-    var props = this.props;
-    var createAccountUrl = "https://meta.wikimedia.org/wiki/Special:CreateAccount?campaign=weekipedia";
-    const returnto = props.query && props.query.returnto;
-    var url = '/auth/mediawiki?project=' + props.language_project;
-    if ( returnto ) {
-      url += '&returnto=' + returnto;
-    }
+export default createReactClass( {
+	render() {
+		var props = this.props;
+		var createAccountUrl = 'https://meta.wikimedia.org/wiki/Special:CreateAccount?campaign=weekipedia';
+		const returnto = props.query && props.query.returnto;
+		var url = '/auth/mediawiki?project=' + props.language_project;
+		if ( returnto ) {
+			url += '&returnto=' + returnto;
+		}
 
-    var body = (
+		var body = (
       <Content className="content user-login">
         <h1>Someday</h1>
         <p>Logged in users enjoy the additional benefits of <strong>managing lists of articles via collections</strong> and
@@ -35,10 +35,9 @@ export default createReactClass({
       </Content>
     );
 
-    return (
+		return (
       <Article {...props} isSpecialPage='yes' title={'Sign in'} body={body}>
       </Article>
-    )
-  }
-})
-
+		);
+	}
+} );

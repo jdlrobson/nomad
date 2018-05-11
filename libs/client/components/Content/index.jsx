@@ -1,8 +1,8 @@
-import React from 'react'
-import './styles.less'
+import React from 'react';
+import './styles.less';
 
-const Content = (props) => (
+const Content = ( props ) => (
     <div className={'content-container ' + ( props.className ? props.className : '' ) }>{props.children}</div>
-  )
+  );
 
-export default Content
+export default Content;
