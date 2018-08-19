@@ -139,9 +139,60 @@ function getBaseHost( lang, project ) {
 	}
 }
 
+
+function parsoidHTMLToJSON( html ) {
+	var doc = domino.createDocument( html );
+	const sections = Array.from( doc.querySelectorAll( 'section' ) ).map( ( secEl ) => {
+		let toclevel;
+		const h2 = secEl.querySelectorAll( 'h2,h3,h4,h5,h6' )[0];
+		const line = h2 ? h2.textContent : undefined;
+		const id = secEl.getAttribute( 'data-mw-section-id' );
+		const anchor = h2 ? h2.getAttribute( 'id' ) : 0;
+		// drop h2
+		if ( h2 ) {
+			h2.parentNode.removeChild( h2 );
+			// @todo 2 is not correct
+			switch ( h2.tagName ) {
+				case 'H6':
+					toclevel = 5;
+					break;
+				case 'H5':
+					toclevel = 4;
+					break;
+				case 'H4':
+					toclevel = 3;
+					break;
+				case 'H3':
+					toclevel = 2;
+					break;
+				default:
+					toclevel = 1;
+					break;
+			}
+		}
+		return {
+			toclevel,
+			anchor,
+			id,
+			line,
+			text: secEl.innerHTML
+		};
+	});
+
+	return {
+		lead: {
+			displaytitle: doc.querySelector( 'head title' ).textContent,
+			sections: sections.slice( 0, 1 )
+		},
+		remaining: {
+			sections: sections.slice( 1 )
+		}
+	};
+}
+
 export default function ( title, lang, project, includeReferences, revision ) {
 	const host = getBaseHost( lang, project ) + HOST_SUFFIX;
-	const path = '/api/rest_v1/page/mobile-sections/';
+	const path = '/api/rest_v1/page/html/';
 	const suffix = revision ? '/' + revision : '';
 	if ( title.substr( 0, 6 ) === 'Media:' ) {
 		title = title.replace( 'Media:', 'File:' );
@@ -172,9 +223,10 @@ export default function ( title, lang, project, includeReferences, revision ) {
 			};
 		}
 	} else if ( resp.status === 200 ) {
-		return resp.json();
+		return resp.text().then(parsoidHTMLToJSON);
 	}
-} ).then( function ( json ) {
+} )
+.then( function ( json ) {
 	if ( !json ) {
 		throw '404: Bad title given';
 	}
