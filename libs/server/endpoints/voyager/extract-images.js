@@ -12,6 +12,9 @@ function extractImages( section ) {
 		var img = node.querySelector( 'img' );
 		var caption = node.querySelector( 'figcaption' );
 		var link = node.querySelector( 'a.image' );
+		if ( !img ) {
+			return;
+		}
 		var src = img.getAttribute( 'src' );
 
 		var imgData = {
