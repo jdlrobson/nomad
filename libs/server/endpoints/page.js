@@ -142,7 +142,9 @@ function getBaseHost( lang, project ) {
 
 function parsoidHTMLToJSON( html ) {
 	var doc = domino.createDocument( html );
-	const sections = Array.from( doc.querySelectorAll( 'section' ) ).map( ( secEl ) => {
+	const sections = Array.from( doc.querySelectorAll( 'section' ) ).map( ( sec ) => {
+		// Clone so you can make modifications
+		const secEl = sec.cloneNode( true );
 		let toclevel;
 		const h2 = secEl.querySelectorAll( 'h2,h3,h4,h5,h6' )[0];
 		const line = h2 ? h2.textContent : undefined;
@@ -170,6 +172,8 @@ function parsoidHTMLToJSON( html ) {
 					break;
 			}
 		}
+		// Remove subsections
+		Array.from( secEl.querySelectorAll( 'section' ) ).forEach( ( node ) => node.parentNode.removeChild( node ) );
 		return {
 			toclevel,
 			anchor,
