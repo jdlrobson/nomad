@@ -1,3 +1,6 @@
+NOMAD HAS MOVED!
+Long live its baby - [someday](https://github.com/jdlrobson/someday)
+
 #Nomad
 
 I'm building the travel guide I need.
